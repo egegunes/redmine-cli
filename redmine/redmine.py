@@ -21,6 +21,14 @@ class Redmine:
 
         return r.json()["projects"]
 
+    def get_trackers(self):
+        r = requests.get(
+            f"{self.url}/trackers.json",
+            headers=self.auth_header
+        )
+
+        return r.json()["trackers"]
+
     def get_issues(self, **kwargs):
         query_params = {
             "assigned_to_id": kwargs.get("assignee"),

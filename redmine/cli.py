@@ -6,6 +6,7 @@ import click
 from redmine.redmine import Redmine
 from redmine.issue import Issue, IssueRow
 from redmine.project import Project
+from redmine.tracker import Tracker
 
 
 def read_config():
@@ -107,3 +108,14 @@ def projects(redmine):
 
     for project in projects:
         click.echo(Project(**project))
+
+
+@cli.command()
+@click.pass_obj
+def trackers(redmine):
+    """ List trackers """
+
+    trackers = redmine.get_trackers()
+
+    for tracker in trackers:
+        click.echo(Tracker(**tracker))
