@@ -13,6 +13,14 @@ class Redmine:
     def __str__(self):
         return repr(self)
 
+    def get_projects(self):
+        r = requests.get(
+            f"{self.url}/projects.json",
+            headers=self.auth_header
+        )
+
+        return r.json()["projects"]
+
     def get_issues(self, **kwargs):
         query_params = {
             "assigned_to_id": kwargs.get("assignee"),

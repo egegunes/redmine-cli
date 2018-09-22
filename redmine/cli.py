@@ -5,6 +5,7 @@ import click
 
 from redmine.redmine import Redmine
 from redmine.issue import Issue, IssueRow
+from redmine.project import Project
 
 
 def read_config():
@@ -95,3 +96,14 @@ def update(redmine, issue_id):
     """ Update issue """
 
     redmine.update_issue(issue_id)
+
+
+@cli.command()
+@click.pass_obj
+def projects(redmine):
+    """ List projects """
+
+    projects = redmine.get_projects()
+
+    for project in projects:
+        click.echo(Project(**project))
