@@ -1,3 +1,6 @@
+import os
+import json
+
 import requests
 
 
@@ -7,13 +10,17 @@ class Redmine:
         self.auth_header = {"X-Redmine-API-Key": api_key}
         self.me = me
 
+        self.cache_dir = os.path.join(os.getenv("HOME"), ".cache/redmine")
+        if not os.path.exists(self.cache_dir):
+            os.mkdir(self.cache_dir)
+
     def __repr__(self):
         return f"Redmine({self.url})"
 
     def __str__(self):
         return repr(self)
 
-    def get_projects(self):
+    def fetch_projects(self):
         r = requests.get(
             f"{self.url}/projects.json",
             headers=self.auth_header
@@ -21,7 +28,21 @@ class Redmine:
 
         return r.json()["projects"]
 
-    def get_trackers(self):
+    def get_projects(self):
+        cache_file = os.path.join(self.cache_dir, "project.json")
+        if os.path.exists(cache_file):
+            print("Serving projects from cache...")
+            with open(cache_file, "r") as cf:
+                projects = json.loads(cf.read())
+        else:
+            print("Fetching projects...")
+            projects = self.fetch_projects()
+            with open(cache_file, "w+") as cf:
+                cf.write(json.dumps(projects))
+
+        return projects
+
+    def fetch_trackers(self):
         r = requests.get(
             f"{self.url}/trackers.json",
             headers=self.auth_header
@@ -29,7 +50,21 @@ class Redmine:
 
         return r.json()["trackers"]
 
-    def get_statuses(self):
+    def get_trackers(self):
+        cache_file = os.path.join(self.cache_dir, "tracker.json")
+        if os.path.exists(cache_file):
+            print("Serving trackers from cache...")
+            with open(cache_file, "r") as cf:
+                trackers = json.loads(cf.read())
+        else:
+            print("Fetching trackers...")
+            trackers = self.fetch_trackers()
+            with open(cache_file, "w+") as cf:
+                cf.write(json.dumps(trackers))
+
+        return trackers
+
+    def fetch_statuses(self):
         r = requests.get(
             f"{self.url}/issue_statuses.json",
             headers=self.auth_header
@@ -37,13 +72,41 @@ class Redmine:
 
         return r.json()["issue_statuses"]
 
-    def get_queries(self):
+    def get_statuses(self):
+        cache_file = os.path.join(self.cache_dir, "status.json")
+        if os.path.exists(cache_file):
+            print("Serving statuses from cache...")
+            with open(cache_file, "r") as cf:
+                statuses = json.loads(cf.read())
+        else:
+            print("Fetching statuses...")
+            statuses = self.fetch_statuses()
+            with open(cache_file, "w+") as cf:
+                cf.write(json.dumps(statuses))
+
+        return statuses
+
+    def fetch_queries(self):
         r = requests.get(
             f"{self.url}/queries.json",
             headers=self.auth_header
         )
 
         return r.json()["queries"]
+
+    def get_queries(self):
+        cache_file = os.path.join(self.cache_dir, "query.json")
+        if os.path.exists(cache_file):
+            print("Serving queries from cache...")
+            with open(cache_file, "r") as cf:
+                queries = json.loads(cf.read())
+        else:
+            print("Fetching queries...")
+            queries = self.fetch_queries()
+            with open(cache_file, "w+") as cf:
+                cf.write(json.dumps(queries))
+
+        return queries
 
     def get_issues(self, **kwargs):
         query_params = {
