@@ -14,6 +14,8 @@ class Redmine:
         if not os.path.exists(self.cache_dir):
             os.mkdir(self.cache_dir)
 
+        self.statuses = self.get_statuses()
+
     def __repr__(self):
         return f"Redmine({self.url})"
 

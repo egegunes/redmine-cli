@@ -8,6 +8,20 @@ class Journal:
         self.created_on = kwargs.get("created_on")
         self.notes = kwargs.get("notes")
         self.details = kwargs.get("details")
+        self.prefixes = {
+            "assigned_to_id": "Assignee",
+            "status_id": "Status",
+            "start_date": "Start date",
+            "due_date": "Due date",
+            "parent_id": "Parent task",
+            "blocks": "Blocks",
+            "blocked": "Blocked by",
+            "priority_id": "Priority",
+            "fixed_version_id": "Version",
+            "done_ratio": "Done"
+        }
+        self.statuses = {str(s["id"]): s["name"]
+                         for s in kwargs.get("statuses", {})}
 
     def __repr__(self):
         return f"Journal({self.user['name']}, {self.created_on})"
@@ -31,24 +45,9 @@ class Journal:
         return notes
 
     def get_details(self):
-        update_detail = ""
-
         for detail in self.details:
-            prefixes = {
-                "assigned_to_id": "Assignee",
-                "status_id": "Status",
-                "start_date": "Start date",
-                "due_date": "Due date",
-                "parent_id": "Parent task",
-                "blocks": "Blocks",
-                "blocked": "Blocked by",
-                "priority_id": "Priority",
-                "fixed_version_id": "Version",
-                "done_ratio": "Done"
-            }
-
             try:
-                prefix = prefixes[detail["name"]]
+                prefix = self.prefixes[detail["name"]]
             except KeyError as e:
                 if detail["property"] == "attachment":
                     prefix = "Attachment"
@@ -60,9 +59,12 @@ class Journal:
             update_detail = ""
 
             if detail.get("old_value") and detail.get("new_value"):
+                if prefix == "Status" and self.statuses:
+                    detail["old_value"] = self.statuses[detail["old_value"]]
+                    detail["new_value"] = self.statuses[detail["new_value"]]
                 update_detail += f"{prefix} changed from " \
-                                f"{detail['old_value']} to " \
-                                f"{detail['new_value']}\n"
+                                 f"{detail['old_value']} to " \
+                                 f"{detail['new_value']}\n"
             elif detail.get("new_value"):
                 update_detail += f"{prefix} set to {detail['new_value']}\n"
             else:

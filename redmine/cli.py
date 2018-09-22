@@ -83,7 +83,7 @@ def show(redmine, issue_id, journals):
 
     issue = redmine.get_issue(issue_id, journals)
 
-    click.echo(Issue(**issue))
+    click.echo(Issue(**issue, statuses=redmine.statuses))
 
 
 @cli.command()
