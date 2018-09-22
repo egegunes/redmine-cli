@@ -43,6 +43,7 @@ def cli(ctx):
 @cli.command()
 @click.option("--status", default=None)
 @click.option("--tracker", default=None)
+@click.option("--project", default=None)
 @click.option("--limit", default=25)
 @click.option("--sort", default="id:desc")
 @click.pass_obj
@@ -59,6 +60,7 @@ def me(redmine, **kwargs):
 @click.option("--assignee", default=None)
 @click.option("--status", default=None)
 @click.option("--tracker", default=None)
+@click.option("--project", default=None)
 @click.option("--query", default=None)
 @click.option("--limit", default=25)
 @click.option("--sort", default="id:desc")
