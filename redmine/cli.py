@@ -4,6 +4,7 @@ import os
 import click
 
 from redmine.issue import Issue, IssueStatus
+from redmine.priority import Priority
 from redmine.project import Project
 from redmine.query import Query
 from redmine.redmine import Redmine
@@ -83,7 +84,11 @@ def show(redmine, issue_id, journals):
 
     issue = redmine.get_issue(issue_id, journals)
 
-    click.echo(Issue(**issue, statuses=redmine.statuses))
+    click.echo(
+        Issue(**issue,
+              statuses=redmine.statuses,
+              priorities=redmine.priorities)
+    )
 
 
 @cli.command()
@@ -145,3 +150,14 @@ def queries(redmine):
 
     for query in queries:
         click.echo(Query(**query))
+
+
+@cli.command()
+@click.pass_obj
+def priorities(redmine):
+    """ List priorities """
+
+    priorities = redmine.get_priorities()
+
+    for priority in priorities:
+        click.echo(Priority(**priority))

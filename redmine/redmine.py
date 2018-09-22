@@ -15,6 +15,7 @@ class Redmine:
             os.mkdir(self.cache_dir)
 
         self.statuses = self.get_statuses()
+        self.priorities = self.get_priorities()
 
     def __repr__(self):
         return f"Redmine({self.url})"
@@ -33,11 +34,9 @@ class Redmine:
     def get_projects(self):
         cache_file = os.path.join(self.cache_dir, "project.json")
         if os.path.exists(cache_file):
-            print("Serving projects from cache...")
             with open(cache_file, "r") as cf:
                 projects = json.loads(cf.read())
         else:
-            print("Fetching projects...")
             projects = self.fetch_projects()
             with open(cache_file, "w+") as cf:
                 cf.write(json.dumps(projects))
@@ -55,11 +54,9 @@ class Redmine:
     def get_trackers(self):
         cache_file = os.path.join(self.cache_dir, "tracker.json")
         if os.path.exists(cache_file):
-            print("Serving trackers from cache...")
             with open(cache_file, "r") as cf:
                 trackers = json.loads(cf.read())
         else:
-            print("Fetching trackers...")
             trackers = self.fetch_trackers()
             with open(cache_file, "w+") as cf:
                 cf.write(json.dumps(trackers))
@@ -77,11 +74,9 @@ class Redmine:
     def get_statuses(self):
         cache_file = os.path.join(self.cache_dir, "status.json")
         if os.path.exists(cache_file):
-            print("Serving statuses from cache...")
             with open(cache_file, "r") as cf:
                 statuses = json.loads(cf.read())
         else:
-            print("Fetching statuses...")
             statuses = self.fetch_statuses()
             with open(cache_file, "w+") as cf:
                 cf.write(json.dumps(statuses))
@@ -99,16 +94,34 @@ class Redmine:
     def get_queries(self):
         cache_file = os.path.join(self.cache_dir, "query.json")
         if os.path.exists(cache_file):
-            print("Serving queries from cache...")
             with open(cache_file, "r") as cf:
                 queries = json.loads(cf.read())
         else:
-            print("Fetching queries...")
             queries = self.fetch_queries()
             with open(cache_file, "w+") as cf:
                 cf.write(json.dumps(queries))
 
         return queries
+
+    def fetch_priorities(self):
+        r = requests.get(
+            f"{self.url}/enumerations/issue_priorities.json",
+            headers=self.auth_header
+        )
+
+        return r.json()["issue_priorities"]
+
+    def get_priorities(self):
+        cache_file = os.path.join(self.cache_dir, "priority.json")
+        if os.path.exists(cache_file):
+            with open(cache_file, "r") as cf:
+                priorities = json.loads(cf.read())
+        else:
+            priorities = self.fetch_priorities()
+            with open(cache_file, "w+") as cf:
+                cf.write(json.dumps(priorities))
+
+        return priorities
 
     def get_issues(self, **kwargs):
         query_params = {

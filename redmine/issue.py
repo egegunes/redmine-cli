@@ -20,6 +20,7 @@ class Issue:
         self.journals = kwargs.get("journals")
         self.done_ratio = kwargs.get("done_ratio")
         self.statuses = kwargs.get("statuses")
+        self.priorities = kwargs.get("priorities")
 
     def __repr__(self):
         return f"Issue({self.id}, {self.subject})"
@@ -53,7 +54,11 @@ class Issue:
     def get_journals(self):
         journals = ""
         for journal in self.journals:
-            journals += str(Journal(**journal, statuses=self.statuses))
+            journals += str(
+                Journal(**journal,
+                        statuses=self.statuses,
+                        priorities=self.priorities)
+            )
 
         return journals
 
