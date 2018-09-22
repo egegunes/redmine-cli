@@ -12,33 +12,75 @@ from redmine.tracker import Tracker
 from redmine.user import User
 
 
-def read_config():
-    HOME = os.getenv("HOME")
-    CONFIG_PATHS = [
-        os.path.join(HOME, ".redmine.conf"),
-        os.path.join(HOME, ".redmine/redmine.conf"),
-        os.path.join(HOME, ".config/redmine/redmine.conf")
-    ]
+class Config:
+    def __init__(self, *args, **kwargs):
+        HOME = os.getenv("HOME")
+        self.paths = [
+            os.path.join(HOME, ".redmine.conf"),
+            os.path.join(HOME, ".redmine/redmine.conf"),
+            os.path.join(HOME, ".config/redmine/redmine.conf")
+        ]
+        self.url = None
+        self.api_key = None
+        self.me = None
+        self.aliases = {}
+        self.read()
 
-    config = configparser.ConfigParser()
+    def read(self):
+        config = configparser.ConfigParser()
 
-    for path in CONFIG_PATHS:
-        if os.path.isfile(path):
-            config.read(path)
-            break
+        for path in self.paths:
+            if os.path.isfile(path):
+                config.read(path)
+                break
 
-    return config
+        self.url = config["redmine"]["url"]
+        self.api_key = config["redmine"]["key"]
+        self.me = config["redmine"]["me"]
+
+        try:
+            self.aliases.update(config.items("aliases"))
+        except configparser.NoSectionError:
+            pass
+
+        return config
 
 
-@click.group()
+pass_config = click.make_pass_decorator(Config, ensure=True)
+
+
+class AliasedGroup(click.Group):
+    def group_params(self, params):
+        grouped_params = []
+
+        for i in range(0, len(params), 2):
+            grouped_params.append((params[i].lstrip("-"), params[i + 1]))
+
+        return grouped_params
+
+    def get_command(self, ctx, cmd_name):
+        # Return builtin commands as normal
+        ctx.alias = False
+        c = click.Group.get_command(self, ctx, cmd_name)
+        if c is not None:
+            return c
+
+        cfg = ctx.ensure_object(Config)
+
+        if cmd_name in cfg.aliases:
+            actual_cmd = cfg.aliases[cmd_name].split()
+            params = self.group_params(actual_cmd[1:])
+            for param in params:
+                ctx.alias = True
+                ctx.params[param[0]] = param[1]
+            return click.Group.get_command(self, ctx, actual_cmd[0])
+
+
+@click.command(cls=AliasedGroup)
+@pass_config
 @click.pass_context
-def cli(ctx):
-    config = read_config()
-    redmine = Redmine(
-        config["redmine"]["url"],
-        config["redmine"]["key"],
-        config["redmine"]["me"]
-    )
+def cli(ctx, cfg, **kwargs):
+    redmine = Redmine(cfg.url, cfg.api_key, cfg.me)
     ctx.obj = redmine
 
 
@@ -49,8 +91,12 @@ def cli(ctx):
 @click.option("--limit", default=25)
 @click.option("--sort", default="id:desc")
 @click.pass_obj
-def me(redmine, **kwargs):
+@click.pass_context
+def me(ctx, redmine, **kwargs):
     """ List issues assigned to requester """
+
+    if ctx.parent.alias:
+        kwargs.update(ctx.parent.params)
 
     issues = redmine.get_issues(assignee=redmine.me, **kwargs)
 
@@ -67,8 +113,12 @@ def me(redmine, **kwargs):
 @click.option("--limit", default=25)
 @click.option("--sort", default="id:desc")
 @click.pass_obj
-def issues(redmine, **kwargs):
+@click.pass_context
+def issues(ctx, redmine, **kwargs):
     """ List issues """
+
+    if ctx.parent.alias:
+        kwargs.update(ctx.parent.params)
 
     issues = redmine.get_issues(**kwargs)
 
