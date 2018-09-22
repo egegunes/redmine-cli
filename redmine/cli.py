@@ -1,13 +1,13 @@
-import os
 import configparser
+import os
 
 import click
 
-from redmine.redmine import Redmine
-from redmine.issue import Issue, IssueRow, IssueStatus
+from redmine.issue import Issue, IssueStatus
 from redmine.project import Project
-from redmine.tracker import Tracker
 from redmine.query import Query
+from redmine.redmine import Redmine
+from redmine.tracker import Tracker
 
 
 def read_config():
@@ -53,7 +53,7 @@ def me(redmine, **kwargs):
     issues = redmine.get_issues(assignee=redmine.me, **kwargs)
 
     for issue in issues:
-        click.echo(IssueRow(**issue))
+        click.echo(Issue(**issue).as_row())
 
 
 @cli.command()
@@ -71,7 +71,7 @@ def issues(redmine, **kwargs):
     issues = redmine.get_issues(**kwargs)
 
     for issue in issues:
-        click.echo(IssueRow(**issue))
+        click.echo(Issue(**issue).as_row())
 
 
 @cli.command()

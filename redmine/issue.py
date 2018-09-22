@@ -18,6 +18,7 @@ class Issue:
         self.due_date = kwargs.get("due_date")
         self.description = kwargs.get("description")
         self.journals = kwargs.get("journals")
+        self.done_ratio = kwargs.get("done_ratio")
 
     def __repr__(self):
         return f"Issue({self.id}, {self.subject})"
@@ -55,23 +56,8 @@ class Issue:
 
         return journals
 
-
-class IssueRow:
-    def __init__(self, *args, **kwargs):
-        self.issue_id = kwargs.get("id")
-        self.project = kwargs.get("project")
-        self.tracker = kwargs.get("tracker")
-        self.status = kwargs.get("status")
-        self.priority = kwargs.get("priority")
-        self.author = kwargs.get("author")
-        self.assigned_to = kwargs.get("assigned_to")
-        self.subject = kwargs.get("subject")
-        self.done_ratio = kwargs.get("done_ratio")
-        self.created_on = kwargs.get("created_on")
-        self.updated_on = kwargs.get("updated_on")
-
-    def __str__(self):
-        return f"{self.issue_id:>6} " \
+    def as_row(self):
+        return f"{self.id:>6} " \
                f"{self.project['name']:22.20} " \
                f"{self.priority['name']:<8} " \
                f"{self.status['name']:<16} " \
