@@ -77,3 +77,12 @@ class IssueRow:
                f"{self.status['name']:<16} " \
                f"{self.done_ratio:>2}% " \
                f"{self.subject:<30}"
+
+
+class IssueStatus:
+    def __init__(self, *args, **kwargs):
+        self.id = kwargs.get("id")
+        self.name = kwargs.get("name")
+
+    def __str__(self):
+        return f"{self.id:<3} {self.name}"

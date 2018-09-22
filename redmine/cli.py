@@ -4,7 +4,7 @@ import configparser
 import click
 
 from redmine.redmine import Redmine
-from redmine.issue import Issue, IssueRow
+from redmine.issue import Issue, IssueRow, IssueStatus
 from redmine.project import Project
 from redmine.tracker import Tracker
 
@@ -119,3 +119,14 @@ def trackers(redmine):
 
     for tracker in trackers:
         click.echo(Tracker(**tracker))
+
+
+@cli.command()
+@click.pass_obj
+def statuses(redmine):
+    """ List statuses """
+
+    statuses = redmine.get_statuses()
+
+    for status in statuses:
+        click.echo(IssueStatus(**status))
