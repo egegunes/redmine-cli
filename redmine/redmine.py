@@ -149,9 +149,9 @@ class Redmine:
 
             for m in memberships:
                 try:
-                    users[m["user"]["id"]] = m["user"]["name"]
+                    users[str(m["user"]["id"])] = m["user"]["name"]
                 except KeyError:
-                    users[m["group"]["id"]] = m["group"]["name"]
+                    users[str(m["group"]["id"])] = m["group"]["name"]
 
             with open(cache_file, "w+") as cf:
                 cf.write(json.dumps(users))

@@ -88,7 +88,8 @@ def show(redmine, issue_id, journals):
     click.echo(
         Issue(**issue,
               statuses=redmine.statuses,
-              priorities=redmine.priorities)
+              priorities=redmine.priorities,
+              users=redmine.users)
     )
 
 

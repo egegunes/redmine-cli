@@ -24,6 +24,7 @@ class Journal:
                          for s in kwargs.get("statuses", {})}
         self.priorities = {str(p["id"]): p["name"]
                            for p in kwargs.get("priorities", {})}
+        self.users = kwargs.get("users")
 
     def __repr__(self):
         return f"Journal({self.user['name']}, {self.created_on})"
@@ -67,6 +68,9 @@ class Journal:
                 elif prefix == "Priority" and self.priorities:
                     detail["old_value"] = self.priorities[detail["old_value"]]
                     detail["new_value"] = self.priorities[detail["new_value"]]
+                elif prefix == "Assignee" and self.users:
+                    detail["old_value"] = self.users[detail["old_value"]]
+                    detail["new_value"] = self.users[detail["new_value"]]
 
                 update_detail += f"{prefix} changed from " \
                                  f"{detail['old_value']} to " \
