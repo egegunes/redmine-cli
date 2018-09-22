@@ -8,3 +8,5 @@ check:
 	flake8 redmine/*
 	isort redmine/*
 
+install:
+	pip install -e .
