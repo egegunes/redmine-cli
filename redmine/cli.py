@@ -9,6 +9,7 @@ from redmine.project import Project
 from redmine.query import Query
 from redmine.redmine import Redmine
 from redmine.tracker import Tracker
+from redmine.user import User
 
 
 def read_config():
@@ -161,3 +162,14 @@ def priorities(redmine):
 
     for priority in priorities:
         click.echo(Priority(**priority))
+
+
+@cli.command()
+@click.pass_obj
+def users(redmine):
+    """ List users """
+
+    users = redmine.get_users()
+
+    for user_id, name in users.items():
+        click.echo(User(user_id, name))

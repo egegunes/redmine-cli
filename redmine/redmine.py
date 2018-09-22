@@ -16,6 +16,8 @@ class Redmine:
 
         self.statuses = self.get_statuses()
         self.priorities = self.get_priorities()
+        self.projects = self.get_projects()
+        self.users = self.get_users()
 
     def __repr__(self):
         return f"Redmine({self.url})"
@@ -122,6 +124,39 @@ class Redmine:
                 cf.write(json.dumps(priorities))
 
         return priorities
+
+    def fetch_users(self, project_id):
+        r = requests.get(
+            f"{self.url}/projects/{project_id}/memberships.json",
+            headers=self.auth_header
+        )
+
+        return r.json()["memberships"]
+
+    def get_users(self):
+        cache_file = os.path.join(self.cache_dir, "users.json")
+        if os.path.exists(cache_file):
+            with open(cache_file, "r") as cf:
+                users = json.loads(cf.read())
+        else:
+            memberships = []
+
+            print("Caching users... This may take a while.")
+            for project in self.projects:
+                memberships.extend(self.fetch_users(project["id"]))
+
+            users = {}
+
+            for m in memberships:
+                try:
+                    users[m["user"]["id"]] = m["user"]["name"]
+                except KeyError:
+                    users[m["group"]["id"]] = m["group"]["name"]
+
+            with open(cache_file, "w+") as cf:
+                cf.write(json.dumps(users))
+
+        return users
 
     def get_issues(self, **kwargs):
         query_params = {
