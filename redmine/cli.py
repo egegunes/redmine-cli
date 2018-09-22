@@ -7,6 +7,7 @@ from redmine.redmine import Redmine
 from redmine.issue import Issue, IssueRow, IssueStatus
 from redmine.project import Project
 from redmine.tracker import Tracker
+from redmine.query import Query
 
 
 def read_config():
@@ -58,6 +59,7 @@ def me(redmine, **kwargs):
 @click.option("--assignee", default=None)
 @click.option("--status", default=None)
 @click.option("--tracker", default=None)
+@click.option("--query", default=None)
 @click.option("--limit", default=25)
 @click.option("--sort", default="id:desc")
 @click.pass_obj
@@ -130,3 +132,14 @@ def statuses(redmine):
 
     for status in statuses:
         click.echo(IssueStatus(**status))
+
+
+@cli.command()
+@click.pass_obj
+def queries(redmine):
+    """ List queries """
+
+    queries = redmine.get_queries()
+
+    for query in queries:
+        click.echo(Query(**query))
