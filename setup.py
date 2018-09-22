@@ -9,6 +9,9 @@ with open('README.md') as f:
 with open('LICENSE') as f:
     license = f.read()
 
+with open('requirements.txt') as f:
+    requirements = f.read()
+
 setup(
     name='redmine-cli',
     version='0.1.0',
@@ -19,10 +22,7 @@ setup(
     url='https://github.com/egegunes/redmine-cli',
     license=license,
     packages=find_packages(exclude=('tests', 'docs')),
-    install_requires=[
-        'requests',
-        'Click'
-    ],
+    install_requires=requirements,
     entry_points='''
         [console_scripts]
         redmine=redmine.cli:cli
