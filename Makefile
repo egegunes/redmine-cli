@@ -10,3 +10,9 @@ check:
 
 install:
 	pip install -e .
+
+test:
+	pytest
+
+coverage:
+	pytest --cov=redmine
