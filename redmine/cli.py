@@ -165,7 +165,7 @@ def update(redmine, issue_id):
 def projects(redmine):
     """ List projects """
 
-    projects = redmine.get_projects()
+    projects = redmine.get("projects")
 
     for project in projects:
         click.echo(Project(**project))
@@ -176,7 +176,7 @@ def projects(redmine):
 def trackers(redmine):
     """ List trackers """
 
-    trackers = redmine.get_trackers()
+    trackers = redmine.get("trackers")
 
     for tracker in trackers:
         click.echo(Tracker(**tracker))
@@ -187,7 +187,7 @@ def trackers(redmine):
 def statuses(redmine):
     """ List statuses """
 
-    statuses = redmine.get_statuses()
+    statuses = redmine.get("issue_statuses")
 
     for status in statuses:
         click.echo(IssueStatus(**status))
@@ -198,7 +198,7 @@ def statuses(redmine):
 def queries(redmine):
     """ List queries """
 
-    queries = redmine.get_queries()
+    queries = redmine.get("queries")
 
     for query in queries:
         click.echo(Query(**query))
@@ -209,7 +209,7 @@ def queries(redmine):
 def priorities(redmine):
     """ List priorities """
 
-    priorities = redmine.get_priorities()
+    priorities = redmine.get("issue_priorities")
 
     for priority in priorities:
         click.echo(Priority(**priority))
