@@ -1,4 +1,4 @@
-# Redmine CLI
+# Redmine CLI [![Build Status](https://travis-ci.com/egegunes/redmine-cli.svg?branch=master)](https://travis-ci.com/egegunes/redmine-cli)
 
 ## Installation
 
