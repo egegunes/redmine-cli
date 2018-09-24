@@ -4,4 +4,6 @@ python:
 install:
   - make requirements
   - make dev-requirements
-script: make test
+script:
+  - make lint
+  - make test

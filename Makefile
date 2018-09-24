@@ -4,9 +4,9 @@ requirements:
 dev-requirements:
 	pip install -r dev-requirements.txt
 
-check:
-	flake8 redmine/*
-	isort redmine/*
+lint:
+	flake8 redmine/ tests/
+	isort -rc -c redmine/ tests/
 
 install:
 	pip install -e .
