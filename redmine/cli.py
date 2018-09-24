@@ -36,7 +36,9 @@ class Config:
 
         self.url = config["redmine"]["url"]
         self.api_key = config["redmine"]["key"]
-        self.me = config["redmine"]["me"]
+
+        if "me" in config["redmine"]:
+            self.me = config["redmine"]["me"]
 
         try:
             self.aliases.update(config.items("aliases"))
@@ -94,6 +96,10 @@ def cli(ctx, cfg, **kwargs):
 @click.pass_context
 def me(ctx, redmine, **kwargs):
     """ List issues assigned to requester """
+
+    if not redmine.me:
+        return click.echo("redmine: Please add your user" \
+                          "id to use `me` command")
 
     if ctx.parent.alias:
         kwargs.update(ctx.parent.params)
