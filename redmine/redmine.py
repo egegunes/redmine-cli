@@ -38,20 +38,18 @@ class Redmine:
 
     def get(self, resource):
         # Some resources (i.e issue_priorities) have paths that contain "/"
-        filename = resource.split("/")[-1]
-        cache_file = os.path.join(self.cache_dir, "{}.json".format(filename))
+        rname = resource.split("/")[-1]
+        cache_file = os.path.join(self.cache_dir, "{}.json".format(rname))
         if os.path.exists(cache_file):
             with open(cache_file, "r") as cf:
                 data = json.loads(cf.read())
         else:
             data = self.fetch(resource)
             if resource in data:
-                data = data[resource]
-
                 with open(cache_file, "w+") as cf:
                     cf.write(json.dumps(data))
 
-        return data
+        return data[rname]
 
     def get_users(self):
         cache_file = os.path.join(self.cache_dir, "users.json")
