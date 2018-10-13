@@ -174,11 +174,26 @@ def create(redmine, *args, **kwargs):
 
 @cli.command()
 @click.argument("issue_id")
+@click.option("--notes", default=None)
+@click.option("--subject", default=None)
+@click.option("--project", default=None)
+@click.option("--status", default=None)
+@click.option("--tracker", default=None)
+@click.option("--priority", default=None)
+@click.option("--description", default=None)
+@click.option("--assignee", default=None)
+@click.option("--parent", default=None)
+@click.option("--start", default=None)
+@click.option("--due", default=None)
+@click.option("--done", default=None)
 @click.pass_obj
-def update(redmine, issue_id):
+def update(redmine, issue_id, **kwargs):
     """ Update issue """
 
-    redmine.update_issue(issue_id)
+    updated = redmine.update_issue(issue_id, **kwargs)
+
+    if updated:
+        click.echo(f"Issue {issue_id} updated.")
 
 
 @cli.command()

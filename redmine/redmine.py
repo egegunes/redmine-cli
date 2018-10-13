@@ -112,8 +112,37 @@ class Redmine:
 
         return issue
 
-    def update_issue(self, issue_id):
-        print("update command not implemented yet")
+    def update_issue(self, issue_id, **kwargs):
+        fields = {
+            "issue": {
+                "subject": kwargs.get("subject"),
+                "project_id": kwargs.get("project"),
+                "tracker_id": kwargs.get("tracker"),
+                "status_id": kwargs.get("status"),
+                "description": kwargs.get("description"),
+                "priority_id": kwargs.get("priority"),
+                "assigned_to_id": kwargs.get("assignee"),
+                "parent_issue_id": kwargs.get("parent_issue"),
+                "start_date": kwargs.get("start"),
+                "due_date": kwargs.get("due"),
+                "done_ratio": kwargs.get("done"),
+                "notes": kwargs.get("notes"),
+            }
+        }
+
+        for field in list(fields["issue"].keys()):
+            if not fields["issue"][field]:
+                del fields["issue"][field]
+
+        resp = requests.put(
+            f"{self.url}/issues/{issue_id}.json",
+            json=fields,
+            headers=self.auth_header
+        )
+
+        resp.raise_for_status()
+
+        return True
 
     def create_issue(self, **kwargs):
         fields = {
