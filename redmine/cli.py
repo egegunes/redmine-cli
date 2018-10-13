@@ -143,12 +143,12 @@ def show(redmine, issue_id, journals):
 
     issue = redmine.get_issue(issue_id, journals)
 
-    click.echo(
-        Issue(**issue,
-              statuses=redmine.statuses,
-              priorities=redmine.priorities,
-              users=redmine.users)
-    )
+    issue = Issue(**issue,
+                  statuses=redmine.statuses,
+                  priorities=redmine.priorities,
+                  users=redmine.users)
+
+    click.echo_via_pager(str(issue))
 
 
 @cli.command()
