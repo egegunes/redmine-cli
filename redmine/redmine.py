@@ -2,6 +2,7 @@ import json
 import os
 from urllib.parse import urljoin
 
+import click
 import requests
 
 
@@ -60,11 +61,12 @@ class Redmine:
             memberships = []
 
             print("Caching users... This may take a while.")
-            for project in self.projects:
-                resource = "projects/{}/memberships".format(project["id"])
-                response = self.fetch(resource)
-                if "memberships" in response:
-                    memberships.extend(response["memberships"])
+            with click.progressbar(self.projects) as projects:
+                for project in projects:
+                    resource = "projects/{}/memberships".format(project["id"])
+                    response = self.fetch(resource)
+                    if "memberships" in response:
+                        memberships.extend(response["memberships"])
 
             users = {}
 
