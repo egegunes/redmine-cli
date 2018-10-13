@@ -152,11 +152,24 @@ def show(redmine, issue_id, journals):
 
 
 @cli.command()
+@click.option("--subject", prompt=True)
+@click.option("--project", prompt=True)
+@click.option("--status", prompt=True)
+@click.option("--tracker", prompt=True)
+@click.option("--priority", prompt=True)
+@click.option("--description", default=None)
+@click.option("--assignee", default=None)
+@click.option("--start", default=None)
+@click.option("--due", default=None)
+@click.option("--done", default=None)
+@click.option("--parent", default=None)
 @click.pass_obj
-def create(redmine):
+def create(redmine, *args, **kwargs):
     """ Create new issue """
 
-    redmine.create_issue()
+    issue = redmine.create_issue(**kwargs)
+
+    click.echo(Issue(**issue).as_row())
 
 
 @cli.command()
