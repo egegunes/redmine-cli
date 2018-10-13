@@ -67,11 +67,12 @@ class Issue:
 
     def as_row(self):
         return f"{self.id:>6} " \
-               f"{self.project['name']:22.20} " \
+               f"{self.project['name']:21.20} " \
                f"{self.priority['name']:<8} " \
                f"{self.status['name']:<16} " \
-               f"{self.done_ratio:>2}% " \
-               f"{self.subject:<30}"
+               f"{self.done_ratio:>3}% " \
+               f"{self.assigned_to['name']:<21.20} " \
+               f"{self.subject:<61.60}"
 
 
 class IssueStatus:
