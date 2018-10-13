@@ -217,7 +217,7 @@ def queries(redmine):
 def priorities(redmine):
     """ List priorities """
 
-    priorities = sorted(redmine.get("qenumerations/issue_priorities"), key=lambda x: x['id'])
+    priorities = sorted(redmine.get("enumerations/issue_priorities"), key=lambda x: x['id'])
 
     for priority in priorities:
         click.echo(Priority(**priority))
