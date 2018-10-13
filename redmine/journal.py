@@ -48,6 +48,8 @@ class Journal:
         return notes
 
     def get_details(self):
+        update_detail = ""
+
         for detail in self.details:
             try:
                 prefix = self.prefixes[detail["name"]]
@@ -58,8 +60,6 @@ class Journal:
                     continue
                 else:
                     raise KeyError(e)
-
-            update_detail = ""
 
             if detail.get("old_value") and detail.get("new_value"):
                 if prefix == "Status" and self.statuses:
