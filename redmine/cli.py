@@ -12,6 +12,8 @@ from redmine.tracker import Tracker
 from redmine.user import User
 
 
+from collections import OrderedDict
+
 class Config:
     def __init__(self, *args, **kwargs):
         HOME = os.getenv("HOME")
@@ -171,7 +173,7 @@ def update(redmine, issue_id):
 def projects(redmine):
     """ List projects """
 
-    projects = redmine.get("projects")
+    projects = sorted(redmine.get("projects"), key=lambda x: x['name'])
 
     for project in projects:
         click.echo(Project(**project))
@@ -182,7 +184,7 @@ def projects(redmine):
 def trackers(redmine):
     """ List trackers """
 
-    trackers = redmine.get("trackers")
+    trackers = sorted(redmine.get("trackers"), key=lambda x: x['id'])
 
     for tracker in trackers:
         click.echo(Tracker(**tracker))
@@ -193,7 +195,7 @@ def trackers(redmine):
 def statuses(redmine):
     """ List statuses """
 
-    statuses = redmine.get("issue_statuses")
+    statuses = sorted(redmine.get("issue_statuses"), key=lambda x: x['id'])
 
     for status in statuses:
         click.echo(IssueStatus(**status))
@@ -204,7 +206,7 @@ def statuses(redmine):
 def queries(redmine):
     """ List queries """
 
-    queries = redmine.get("queries")
+    queries = sorted(redmine.get("queries"), key=lambda x: x['id'])
 
     for query in queries:
         click.echo(Query(**query))
@@ -215,7 +217,7 @@ def queries(redmine):
 def priorities(redmine):
     """ List priorities """
 
-    priorities = redmine.get("enumerations/issue_priorities")
+    priorities = sorted(redmine.get("qenumerations/issue_priorities"), key=lambda x: x['id'])
 
     for priority in priorities:
         click.echo(Priority(**priority))
@@ -226,7 +228,7 @@ def priorities(redmine):
 def users(redmine):
     """ List users """
 
-    users = redmine.get_users()
+    users = OrderedDict(sorted(redmine.get_users().items(), key=lambda x: x[1]))
 
     for user_id, name in users.items():
         click.echo(User(user_id, name))
