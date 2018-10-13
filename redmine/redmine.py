@@ -89,14 +89,13 @@ class Redmine:
             "limit": kwargs.get("limit"),
             "sort": kwargs.get("sort")
         }
-        r = requests.get(
+        resp = requests.get(
             f"{self.url}/issues.json",
             params=query_params,
             headers=self.auth_header
         )
-        issues = r.json()["issues"]
 
-        return issues
+        return resp.json()["issues"]
 
     def get_issue(self, issue_id, journals):
         query_params = {}
