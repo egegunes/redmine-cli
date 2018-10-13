@@ -157,7 +157,7 @@ def show(redmine, issue_id, journals):
 @click.option("--status", prompt=True)
 @click.option("--tracker", prompt=True)
 @click.option("--priority", prompt=True)
-@click.option("--description", default=None)
+@click.option("--description/--no-description", default=True)
 @click.option("--assignee", default=None)
 @click.option("--start", default=None)
 @click.option("--due", default=None)
@@ -167,6 +167,9 @@ def show(redmine, issue_id, journals):
 def create(redmine, *args, **kwargs):
     """ Create new issue """
 
+    if kwargs.get("description"):
+        kwargs["description"] = click.edit()
+
     issue = redmine.create_issue(**kwargs)
 
     click.echo(Issue(**issue).as_row())
@@ -174,13 +177,13 @@ def create(redmine, *args, **kwargs):
 
 @cli.command()
 @click.argument("issue_id")
-@click.option("--notes", default=None)
+@click.option("--note/--no-note", default=False)
 @click.option("--subject", default=None)
 @click.option("--project", default=None)
 @click.option("--status", default=None)
 @click.option("--tracker", default=None)
 @click.option("--priority", default=None)
-@click.option("--description", default=None)
+@click.option("--description/--no-description", default=False)
 @click.option("--assignee", default=None)
 @click.option("--parent", default=None)
 @click.option("--start", default=None)
@@ -189,6 +192,12 @@ def create(redmine, *args, **kwargs):
 @click.pass_obj
 def update(redmine, issue_id, **kwargs):
     """ Update issue """
+
+    if kwargs.get("note"):
+        kwargs["notes"] = click.edit()
+
+    if kwargs.get("description"):
+        kwargs["description"] = click.edit()
 
     updated = redmine.update_issue(issue_id, **kwargs)
 
