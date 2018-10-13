@@ -1,6 +1,7 @@
 from textwrap import wrap
 
 from redmine.journal import Journal
+from collections import defaultdict
 
 
 class Issue:
@@ -12,7 +13,7 @@ class Issue:
         self.status = kwargs.get("status")
         self.priority = kwargs.get("priority")
         self.author = kwargs.get("author")
-        self.assigned_to = kwargs.get("assigned_to")
+        self.assigned_to = kwargs.get("assigned_to", defaultdict(str))
         self.done = kwargs.get("done")
         self.start_date = kwargs.get("start_date")
         self.due_date = kwargs.get("due_date")
