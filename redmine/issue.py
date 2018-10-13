@@ -42,7 +42,7 @@ class Issue:
         header += f"Status: {self.status['name']}\n"
         header += f"Priority: {self.priority['name']}\n"
         header += f"Author: {self.author['name']}\n"
-        header += f"Assigned to: {self.assigned_to['name']}\n"
+        header += f"Assigned to: {self.assigned_to['name'] if self.assigned_to else 'no one'}\n"
         header += f"Start date: {self.start_date}\n"
         header += f"Due date: {self.due_date}\n"
         header += f"Done: {self.done}\n\n"
