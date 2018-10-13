@@ -100,8 +100,8 @@ def me(ctx, redmine, **kwargs):
     """ List issues assigned to requester """
 
     if not redmine.me:
-        return click.echo("redmine: Please add your user" \
-                          "id to use `me` command")
+        msg = "redmine: Please add your user id to use `me` command"
+        return click.echo(click.style(msg, fg="red"), err=True)
 
     if ctx.parent.alias:
         kwargs.update(ctx.parent.params)
@@ -193,7 +193,8 @@ def update(redmine, issue_id, **kwargs):
     updated = redmine.update_issue(issue_id, **kwargs)
 
     if updated:
-        click.echo(f"Issue {issue_id} updated.")
+        msg = f"Issue {issue_id} updated."
+        click.echo(click.style(msg, fg="green"))
 
 
 @cli.command()
