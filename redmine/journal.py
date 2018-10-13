@@ -36,14 +36,14 @@ class Journal:
         created_on = datetime.strptime(self.created_on, "%Y-%m-%dT%H:%M:%SZ")
         created_on = created_on.strftime("%Y-%m-%d %H:%M")
 
-        return f"\n{created_on} {self.user['name']}\n\n"
+        return f"\n• {created_on} {self.user['name']}\n\n"
 
     def get_notes(self):
         notes = ""
 
         for note in self.notes.splitlines():
             for n in wrap(note, width=79):
-                notes += f"{n}\n"
+                notes += f"\t{n}\n"
 
         return notes
 
@@ -72,12 +72,12 @@ class Journal:
                     detail["old_value"] = self.users[detail["old_value"]]
                     detail["new_value"] = self.users[detail["new_value"]]
 
-                update_detail += f"{prefix} changed from " \
+                update_detail += f"\t‣ {prefix} changed from " \
                                  f"{detail['old_value']} to " \
                                  f"{detail['new_value']}\n"
             elif detail.get("new_value"):
-                update_detail += f"{prefix} set to {detail['new_value']}\n"
+                update_detail += f"\t‣ {prefix} set to {detail['new_value']}\n"
             else:
-                update_detail += f"{prefix} deleted {detail['old_value']}\n"
+                update_detail += f"\t‣ {prefix} deleted {detail['old_value']}\n"
 
         return update_detail
