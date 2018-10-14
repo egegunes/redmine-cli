@@ -19,7 +19,8 @@ class Journal:
             "priority_id": "Priority",
             "fixed_version_id": "Version",
             "done_ratio": "Done",
-            "project_id": "Project"
+            "project_id": "Project",
+            "description": "Description"
         }
         self.statuses = {str(s["id"]): s["name"]
                          for s in kwargs.get("statuses", {})}
@@ -41,6 +42,9 @@ class Journal:
 
     def get_notes(self):
         notes = ""
+
+        if not self.notes:
+            return notes
 
         for note in self.notes.splitlines():
             for n in wrap(note, width=79):
