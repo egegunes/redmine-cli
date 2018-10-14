@@ -19,12 +19,14 @@ Put your Redmine instance's url and api key under `[redmine]` section.
 Usage: redmine [OPTIONS] COMMAND [ARGS]...
 
 Options:
-  --help  Show this message and exit.
+  --force / --no-force  Invalidate cache  [default: False]
+  -h, --help            Show this message and exit.
 
 Commands:
   create      Create new issue
   issues      List issues
   me          List issues assigned to requester
+  open        Open issue in browser
   priorities  List priorities
   projects    List projects
   queries     List queries
@@ -33,6 +35,8 @@ Commands:
   trackers    List trackers
   update      Update issue
   users       List users
+  version     Print version
+
 ```
 
 ## Aliases
