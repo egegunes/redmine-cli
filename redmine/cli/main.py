@@ -437,3 +437,22 @@ def users(redmine):
 
     for user_id, name in users.items():
         click.echo(User(user_id, name))
+
+
+@cli.command()
+def version():
+    """ Print version """
+
+    import platform
+    import pkg_resources
+
+    system = platform.system()
+    kernel = platform.release()
+    python_version = platform.python_version()
+
+    pkg_name = "redmine-cli"
+    version = pkg_resources.require(pkg_name)[0].version
+
+    msg = f"{pkg_name} {version} Python {python_version} {system} {kernel}"
+
+    click.echo(msg)
