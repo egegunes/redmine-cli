@@ -79,10 +79,24 @@ class AliasedGroup(click.Group):
             return click.Group.get_command(self, ctx, actual_cmd[0])
 
 
+def get_description():
+    MARKER = "# Write your description above"
+    message = click.edit('\n\n' + MARKER)
+    if message is not None:
+        return message.split(MARKER, 1)[0].rstrip('\n')
+
+
+def get_note():
+    MARKER = "# Write your note above"
+    message = click.edit('\n\n' + MARKER)
+    if message is not None:
+        return message.split(MARKER, 1)[0].rstrip('\n')
+
+
 OPTIONS = {
     "project": {
         "long": "--project",
-        "short": "-P"
+        "short": "-P",
     },
     "status": {
         "long": "--status",
@@ -110,7 +124,11 @@ OPTIONS = {
     },
     "description": {
         "long": "--description",
-        "short": "-d"
+        "short": "-D"
+    },
+    "note": {
+        "long": "--note",
+        "short": "-n"
     },
     "start": {
         "long": "--start",
@@ -118,7 +136,7 @@ OPTIONS = {
     },
     "due": {
         "long": "--due",
-        "short": "-e"
+        "short": "-d"
     },
     "done": {
         "long": "--done",
@@ -140,13 +158,9 @@ OPTIONS = {
         "long": "--journals/--no-journals",
         "short": "-j/-J"
     },
-    "edit-description": {
-        "long": "--edit-description/--no-edit-description",
+    "edit": {
+        "long": "--edit/--no-edit",
         "short": "-e/-E"
-    },
-    "edit-note": {
-        "long": "--edit-note/--no-edit-note",
-        "short": "-c/-C"
     }
 }
 
@@ -287,6 +301,16 @@ def show(redmine, issue_id, journals):
     prompt=True
 )
 @click.option(
+    OPTIONS["description"]["long"],
+    OPTIONS["description"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["edit"]["long"],
+    OPTIONS["edit"]["short"],
+    default=False
+)
+@click.option(
     OPTIONS["project"]["long"],
     OPTIONS["project"]["short"],
     prompt=True
@@ -305,11 +329,6 @@ def show(redmine, issue_id, journals):
     OPTIONS["priority"]["long"],
     OPTIONS["priority"]["short"],
     prompt=True
-)
-@click.option(
-    OPTIONS["edit-description"]["long"],
-    OPTIONS["edit-description"]["short"],
-    default=True
 )
 @click.option(
     OPTIONS["assignee"]["long"],
@@ -340,8 +359,8 @@ def show(redmine, issue_id, journals):
 def create(redmine, *args, **kwargs):
     """ Create new issue """
 
-    if kwargs.get("description"):
-        kwargs["description"] = click.edit()
+    if kwargs.get("edit"):
+        kwargs["description"] = get_description()
 
     issue = redmine.create_issue(**kwargs)
 
@@ -376,13 +395,18 @@ def create(redmine, *args, **kwargs):
     default=None
 )
 @click.option(
-    OPTIONS["edit-description"]["long"],
-    OPTIONS["edit-description"]["short"],
-    default=False
+    OPTIONS["description"]["long"],
+    OPTIONS["description"]["short"],
+    default=None
 )
 @click.option(
-    OPTIONS["edit-note"]["long"],
-    OPTIONS["edit-note"]["short"],
+    OPTIONS["note"]["long"],
+    OPTIONS["note"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["edit"]["long"],
+    OPTIONS["edit"]["short"],
     default=False
 )
 @click.option(
@@ -414,11 +438,9 @@ def create(redmine, *args, **kwargs):
 def update(redmine, issue_id, **kwargs):
     """ Update issue """
 
-    if kwargs.get("note"):
-        kwargs["notes"] = click.edit()
-
-    if kwargs.get("description"):
-        kwargs["description"] = click.edit()
+    if kwargs.get("edit"):
+        kwargs["description"] = get_description()
+        kwargs["notes"] = get_note()
 
     updated = redmine.update_issue(issue_id, **kwargs)
 
