@@ -18,7 +18,8 @@ class Journal:
             "blocked": "Blocked by",
             "priority_id": "Priority",
             "fixed_version_id": "Version",
-            "done_ratio": "Done"
+            "done_ratio": "Done",
+            "project_id": "Project"
         }
         self.statuses = {str(s["id"]): s["name"]
                          for s in kwargs.get("statuses", {})}
