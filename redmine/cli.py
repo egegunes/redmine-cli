@@ -179,6 +179,10 @@ OPTIONS = {
     "edit": {
         "long": "--edit/--no-edit",
         "short": "-e/-E"
+    },
+    "force": {
+        "long": "--force/--no-force",
+        "help": "Invalidate cache"
     }
 }
 
@@ -189,10 +193,16 @@ CONTEXT_SETTINGS = {
 
 
 @click.command(cls=AliasedGroup, context_settings=CONTEXT_SETTINGS)
+@click.option(
+    OPTIONS["force"]["long"],
+    help=OPTIONS["force"]["help"],
+    show_default=True,
+    default=False
+)
 @pass_config
 @click.pass_context
 def cli(ctx, cfg, **kwargs):
-    redmine = Redmine(cfg.url, cfg.api_key, cfg.me)
+    redmine = Redmine(cfg.url, cfg.api_key, cfg.me, kwargs.get("force"))
     ctx.obj = redmine
 
 
