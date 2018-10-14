@@ -82,6 +82,22 @@ class Redmine:
         return users
 
     def get_issues(self, **kwargs):
+        updated_on = None
+        if kwargs.get("updated_on"):
+            updated_on = kwargs.get("updated_on")
+        elif kwargs.get("updated_before"):
+            updated_on = "<=" + kwargs.get("updated_before")
+        elif kwargs.get("updated_after"):
+            updated_on = ">=" + kwargs.get("updated_after")
+
+        created_on = None
+        if kwargs.get("created_on"):
+            created_on = kwargs.get("created_on")
+        elif kwargs.get("created_before"):
+            created_on = "<=" + kwargs.get("created_before")
+        elif kwargs.get("created_after"):
+            created_on = ">=" + kwargs.get("created_after")
+
         query_params = {
             "assigned_to_id": kwargs.get("assignee"),
             "status_id": kwargs.get("status"),
@@ -93,6 +109,8 @@ class Redmine:
             "start_date": kwargs.get("start"),
             "due_date": kwargs.get("due"),
             "done_ratio": kwargs.get("done"),
+            "updated_on": updated_on,
+            "created_on": created_on,
             "limit": kwargs.get("limit"),
             "sort": kwargs.get("sort")
         }

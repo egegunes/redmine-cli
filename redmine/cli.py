@@ -138,6 +138,24 @@ OPTIONS = {
         "long": "--due",
         "short": "-d"
     },
+    "updated-on": {
+        "long": "--updated-on"
+    },
+    "updated-after": {
+        "long": "--updated-after"
+    },
+    "updated-before": {
+        "long": "--updated-before"
+    },
+    "created-on": {
+        "long": "--created-on"
+    },
+    "created-after": {
+        "long": "--created-after"
+    },
+    "created-before": {
+        "long": "--created-before"
+    },
     "done": {
         "long": "--done",
         "short": "-f"
@@ -229,6 +247,12 @@ def cli(ctx, cfg, **kwargs):
     OPTIONS["sort"]["short"],
     default="id:desc"
 )
+@click.option(OPTIONS["updated-on"]["long"], default=None)
+@click.option(OPTIONS["updated-after"]["long"], default=None)
+@click.option(OPTIONS["updated-before"]["long"], default=None)
+@click.option(OPTIONS["created-on"]["long"], default=None)
+@click.option(OPTIONS["created-after"]["long"], default=None)
+@click.option(OPTIONS["created-before"]["long"], default=None)
 @click.pass_obj
 @click.pass_context
 def me(ctx, redmine, **kwargs):
@@ -308,6 +332,12 @@ def me(ctx, redmine, **kwargs):
     OPTIONS["sort"]["short"],
     default="id:desc"
 )
+@click.option(OPTIONS["updated-on"]["long"], default=None)
+@click.option(OPTIONS["updated-after"]["long"], default=None)
+@click.option(OPTIONS["updated-before"]["long"], default=None)
+@click.option(OPTIONS["created-on"]["long"], default=None)
+@click.option(OPTIONS["created-after"]["long"], default=None)
+@click.option(OPTIONS["created-before"]["long"], default=None)
 @click.pass_obj
 @click.pass_context
 def issues(ctx, redmine, **kwargs):
