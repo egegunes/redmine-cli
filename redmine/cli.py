@@ -1,5 +1,6 @@
 import configparser
 import os
+from collections import OrderedDict
 
 import click
 
@@ -11,8 +12,6 @@ from redmine.redmine import Redmine
 from redmine.tracker import Tracker
 from redmine.user import User
 
-
-from collections import OrderedDict
 
 class Config:
     def __init__(self, *args, **kwargs):
@@ -80,7 +79,84 @@ class AliasedGroup(click.Group):
             return click.Group.get_command(self, ctx, actual_cmd[0])
 
 
-@click.command(cls=AliasedGroup)
+OPTIONS = {
+    "project": {
+        "long": "--project",
+        "short": "-P"
+    },
+    "status": {
+        "long": "--status",
+        "short": "-s"
+    },
+    "tracker": {
+        "long": "--tracker",
+        "short": "-t"
+    },
+    "priority": {
+        "long": "--priority",
+        "short": "-p"
+    },
+    "assignee": {
+        "long": "--assignee",
+        "short": "-a"
+    },
+    "query": {
+        "long": "--query",
+        "short": "-q"
+    },
+    "subject": {
+        "long": "--subject",
+        "short": "-S"
+    },
+    "description": {
+        "long": "--description",
+        "short": "-d"
+    },
+    "start": {
+        "long": "--start",
+        "short": "-b"
+    },
+    "due": {
+        "long": "--due",
+        "short": "-e"
+    },
+    "done": {
+        "long": "--done",
+        "short": "-f"
+    },
+    "parent": {
+        "long": "--parent",
+        "short": "-m"
+    },
+    "limit": {
+        "long": "--limit",
+        "short": "-l"
+    },
+    "sort": {
+        "long": "--sort",
+        "short": "-x"
+    },
+    "journals": {
+        "long": "--journals/--no-journals",
+        "short": "-j/-J"
+    },
+    "edit-description": {
+        "long": "--edit-description/--no-edit-description",
+        "short": "-e/-E"
+    },
+    "edit-note": {
+        "long": "--edit-note/--no-edit-note",
+        "short": "-c/-C"
+    }
+}
+
+
+CONTEXT_SETTINGS = {
+    "help_option_names": ['-h', '--help']
+}
+
+
+@click.command(cls=AliasedGroup, context_settings=CONTEXT_SETTINGS)
 @pass_config
 @click.pass_context
 def cli(ctx, cfg, **kwargs):
@@ -89,11 +165,31 @@ def cli(ctx, cfg, **kwargs):
 
 
 @cli.command()
-@click.option("--status", default=None)
-@click.option("--tracker", default=None)
-@click.option("--project", default=None)
-@click.option("--limit", default=25)
-@click.option("--sort", default="id:desc")
+@click.option(
+    OPTIONS["status"]["long"],
+    OPTIONS["status"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["tracker"]["long"],
+    OPTIONS["tracker"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["project"]["long"],
+    OPTIONS["project"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["limit"]["long"],
+    OPTIONS["limit"]["short"],
+    default=25
+)
+@click.option(
+    OPTIONS["sort"]["long"],
+    OPTIONS["sort"]["short"],
+    default="id:desc"
+)
 @click.pass_obj
 @click.pass_context
 def me(ctx, redmine, **kwargs):
@@ -113,13 +209,41 @@ def me(ctx, redmine, **kwargs):
 
 
 @cli.command()
-@click.option("--assignee", default=None)
-@click.option("--status", default=None)
-@click.option("--tracker", default=None)
-@click.option("--project", default=None)
-@click.option("--query", default=None)
-@click.option("--limit", default=25)
-@click.option("--sort", default="id:desc")
+@click.option(
+    OPTIONS["assignee"]["long"],
+    OPTIONS["assignee"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["status"]["long"],
+    OPTIONS["status"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["tracker"]["long"],
+    OPTIONS["tracker"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["project"]["long"],
+    OPTIONS["project"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["query"]["long"],
+    OPTIONS["query"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["limit"]["long"],
+    OPTIONS["limit"]["short"],
+    default=25
+)
+@click.option(
+    OPTIONS["sort"]["long"],
+    OPTIONS["sort"]["short"],
+    default="id:desc"
+)
 @click.pass_obj
 @click.pass_context
 def issues(ctx, redmine, **kwargs):
@@ -136,7 +260,11 @@ def issues(ctx, redmine, **kwargs):
 
 @cli.command()
 @click.argument("issue_id")
-@click.option("--journals/--no-journals", default=True)
+@click.option(
+    OPTIONS["journals"]["long"],
+    OPTIONS["journals"]["short"],
+    default=True
+)
 @click.pass_obj
 def show(redmine, issue_id, journals):
     """ Show issue details """
@@ -146,23 +274,68 @@ def show(redmine, issue_id, journals):
     issue = Issue(**issue,
                   statuses=redmine.statuses,
                   priorities=redmine.priorities,
+                  projects=redmine.projects,
                   users=redmine.users)
 
     click.echo_via_pager(str(issue))
 
 
 @cli.command()
-@click.option("--subject", prompt=True)
-@click.option("--project", prompt=True)
-@click.option("--status", prompt=True)
-@click.option("--tracker", prompt=True)
-@click.option("--priority", prompt=True)
-@click.option("--description/--no-description", default=True)
-@click.option("--assignee", default=None)
-@click.option("--start", default=None)
-@click.option("--due", default=None)
-@click.option("--done", default=None)
-@click.option("--parent", default=None)
+@click.option(
+    OPTIONS["subject"]["long"],
+    OPTIONS["subject"]["short"],
+    prompt=True
+)
+@click.option(
+    OPTIONS["project"]["long"],
+    OPTIONS["project"]["short"],
+    prompt=True
+)
+@click.option(
+    OPTIONS["status"]["long"],
+    OPTIONS["status"]["short"],
+    prompt=True
+)
+@click.option(
+    OPTIONS["tracker"]["long"],
+    OPTIONS["tracker"]["short"],
+    prompt=True
+)
+@click.option(
+    OPTIONS["priority"]["long"],
+    OPTIONS["priority"]["short"],
+    prompt=True
+)
+@click.option(
+    OPTIONS["edit-description"]["long"],
+    OPTIONS["edit-description"]["short"],
+    default=True
+)
+@click.option(
+    OPTIONS["assignee"]["long"],
+    OPTIONS["assignee"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["start"]["long"],
+    OPTIONS["start"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["due"]["long"],
+    OPTIONS["due"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["done"]["long"],
+    OPTIONS["done"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["parent"]["long"],
+    OPTIONS["parent"]["short"],
+    default=None
+)
 @click.pass_obj
 def create(redmine, *args, **kwargs):
     """ Create new issue """
@@ -177,18 +350,66 @@ def create(redmine, *args, **kwargs):
 
 @cli.command()
 @click.argument("issue_id")
-@click.option("--note/--no-note", default=False)
-@click.option("--subject", default=None)
-@click.option("--project", default=None)
-@click.option("--status", default=None)
-@click.option("--tracker", default=None)
-@click.option("--priority", default=None)
-@click.option("--description/--no-description", default=False)
-@click.option("--assignee", default=None)
-@click.option("--parent", default=None)
-@click.option("--start", default=None)
-@click.option("--due", default=None)
-@click.option("--done", default=None)
+@click.option(
+    OPTIONS["subject"]["long"],
+    OPTIONS["subject"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["project"]["long"],
+    OPTIONS["project"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["status"]["long"],
+    OPTIONS["status"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["tracker"]["long"],
+    OPTIONS["tracker"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["priority"]["long"],
+    OPTIONS["priority"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["edit-description"]["long"],
+    OPTIONS["edit-description"]["short"],
+    default=False
+)
+@click.option(
+    OPTIONS["edit-note"]["long"],
+    OPTIONS["edit-note"]["short"],
+    default=False
+)
+@click.option(
+    OPTIONS["assignee"]["long"],
+    OPTIONS["assignee"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["start"]["long"],
+    OPTIONS["start"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["due"]["long"],
+    OPTIONS["due"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["done"]["long"],
+    OPTIONS["done"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["parent"]["long"],
+    OPTIONS["parent"]["short"],
+    default=None
+)
 @click.pass_obj
 def update(redmine, issue_id, **kwargs):
     """ Update issue """
@@ -255,7 +476,10 @@ def queries(redmine):
 def priorities(redmine):
     """ List priorities """
 
-    priorities = sorted(redmine.get("enumerations/issue_priorities"), key=lambda x: x['id'])
+    priorities = sorted(
+        redmine.get("enumerations/issue_priorities"),
+        key=lambda x: x['id']
+    )
 
     for priority in priorities:
         click.echo(Priority(**priority))
@@ -266,7 +490,9 @@ def priorities(redmine):
 def users(redmine):
     """ List users """
 
-    users = OrderedDict(sorted(redmine.get_users().items(), key=lambda x: x[1]))
+    users = OrderedDict(
+        sorted(redmine.get_users().items(), key=lambda x: x[1])
+    )
 
     for user_id, name in users.items():
         click.echo(User(user_id, name))
