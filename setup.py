@@ -25,6 +25,6 @@ setup(
     install_requires=requirements,
     entry_points='''
         [console_scripts]
-        redmine=redmine.cli:cli
+        redmine=redmine.cli.main:cli
     '''
 )
