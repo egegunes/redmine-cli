@@ -200,6 +200,26 @@ def cli(ctx, cfg, **kwargs):
     default=None
 )
 @click.option(
+    OPTIONS["start"]["long"],
+    OPTIONS["start"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["due"]["long"],
+    OPTIONS["due"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["done"]["long"],
+    OPTIONS["done"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["parent"]["long"],
+    OPTIONS["parent"]["short"],
+    default=None
+)
+@click.option(
     OPTIONS["limit"]["long"],
     OPTIONS["limit"]["short"],
     default=25
@@ -256,6 +276,26 @@ def me(ctx, redmine, **kwargs):
 @click.option(
     OPTIONS["query"]["long"],
     OPTIONS["query"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["start"]["long"],
+    OPTIONS["start"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["due"]["long"],
+    OPTIONS["due"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["done"]["long"],
+    OPTIONS["done"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["parent"]["long"],
+    OPTIONS["parent"]["short"],
     default=None
 )
 @click.option(

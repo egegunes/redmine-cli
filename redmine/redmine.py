@@ -89,6 +89,10 @@ class Redmine:
             "project_id": kwargs.get("project"),
             "priority_id": kwargs.get("priority"),
             "query_id": kwargs.get("query"),
+            "parent_id": kwargs.get("parent"),
+            "start_date": kwargs.get("start"),
+            "due_date": kwargs.get("due"),
+            "done_ratio": kwargs.get("done"),
             "limit": kwargs.get("limit"),
             "sort": kwargs.get("sort")
         }
