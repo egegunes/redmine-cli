@@ -60,7 +60,7 @@ class Redmine:
         else:
             memberships = []
 
-            print("Caching users... This may take a while.")
+            click.echo("Caching users... This may take a while.", err=True)
             with click.progressbar(self.projects) as projects:
                 for project in projects:
                     resource = "projects/{}/memberships".format(project["id"])

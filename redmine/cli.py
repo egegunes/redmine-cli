@@ -526,7 +526,7 @@ def update(redmine, issue_id, **kwargs):
 
     if updated:
         msg = f"Issue {issue_id} updated."
-        click.echo(click.style(msg, fg="green"))
+        click.echo(click.style(msg, fg="green"), err=True)
 
 
 @cli.command()
