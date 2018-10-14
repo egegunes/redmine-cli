@@ -195,6 +195,11 @@ def cli(ctx, cfg, **kwargs):
     default=None
 )
 @click.option(
+    OPTIONS["priority"]["long"],
+    OPTIONS["priority"]["short"],
+    default=None
+)
+@click.option(
     OPTIONS["limit"]["long"],
     OPTIONS["limit"]["short"],
     default=25
@@ -241,6 +246,11 @@ def me(ctx, redmine, **kwargs):
 @click.option(
     OPTIONS["project"]["long"],
     OPTIONS["project"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["priority"]["long"],
+    OPTIONS["priority"]["short"],
     default=None
 )
 @click.option(

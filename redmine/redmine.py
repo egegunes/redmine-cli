@@ -87,6 +87,7 @@ class Redmine:
             "status_id": kwargs.get("status"),
             "tracker_id": kwargs.get("tracker"),
             "project_id": kwargs.get("project"),
+            "priority_id": kwargs.get("priority"),
             "query_id": kwargs.get("query"),
             "limit": kwargs.get("limit"),
             "sort": kwargs.get("sort")
