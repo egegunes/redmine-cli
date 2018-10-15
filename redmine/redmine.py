@@ -157,7 +157,7 @@ class Redmine:
                 "start_date": kwargs.get("start"),
                 "due_date": kwargs.get("due"),
                 "done_ratio": kwargs.get("done"),
-                "notes": kwargs.get("notes"),
+                "notes": kwargs.get("note"),
             }
         }
 

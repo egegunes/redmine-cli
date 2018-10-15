@@ -359,7 +359,7 @@ def update(redmine, issue_id, **kwargs):
 
     if kwargs.get("edit"):
         kwargs["description"] = get_description()
-        kwargs["notes"] = get_note()
+        kwargs["note"] = get_note()
 
     updated = redmine.update_issue(issue_id, **kwargs)
 
