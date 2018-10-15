@@ -1,5 +1,7 @@
 import click
 
+from redmine.cli.config import Config
+
 
 class AliasedGroup(click.Group):
     def group_params(self, params):
