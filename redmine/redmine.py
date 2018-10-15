@@ -36,6 +36,7 @@ class Redmine:
     def fetch(self, resource):
         resp = requests.get(
             urljoin(self.url, "{}.json".format(resource)),
+            params={"limit": 100},
             headers=self.auth_header
         )
 
