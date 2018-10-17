@@ -56,23 +56,37 @@ class Issue:
     def get_journals(self):
         journals = ""
         for journal in self.journals:
-            journals += str(
-                Journal(**journal,
-                        statuses=self.statuses,
-                        priorities=self.priorities,
-                        users=self.users)
-            )
+            journals += str(Journal(**journal,
+                                    statuses=self.statuses,
+                                    priorities=self.priorities,
+                                    users=self.users))
 
         return journals
 
-    def as_row(self):
-        return f"{self.id:>6} " \
-               f"{self.project['name']:21.20} " \
-               f"{self.priority['name']:<8} " \
-               f"{self.status['name']:<16} " \
-               f"{self.done_ratio:>3}% " \
-               f"{self.assigned_to['name']:<21.20} " \
-               f"{self.subject:<61.60}"
+    def as_row(self, show_assignee=True, show_project=True):
+        issue_id = f"{self.id:>6} "
+        project = f"{self.project['name']:21.20} "
+        priority = f"{self.priority['name']:<8} "
+        status = f"{self.status['name']:<16} "
+        done = f"{self.done_ratio:>3}% "
+        assignee = f"{self.assigned_to['name']:<21.20} "
+        subject = f"{self.subject:<61.60} "
+
+        row = issue_id
+
+        if show_project:
+            row += project
+
+        row += priority
+        row += status
+        row += done
+
+        if show_assignee:
+            row += assignee
+
+        row += subject
+
+        return row
 
 
 class IssueStatus:

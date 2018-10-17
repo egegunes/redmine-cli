@@ -106,8 +106,13 @@ def me(ctx, redmine, **kwargs):
 
     issues = redmine.get_issues(assignee=redmine.me, **kwargs)
 
+    show_project = True
+    if kwargs.get("project"):
+        show_project = False
+
     for issue in issues:
-        click.echo(Issue(**issue).as_row())
+        click.echo(Issue(**issue).as_row(show_assignee=False,
+                                         show_project=show_project))
 
 
 @cli.command()
@@ -187,8 +192,12 @@ def issues(ctx, redmine, **kwargs):
 
     issues = redmine.get_issues(**kwargs)
 
+    show_project = True
+    if kwargs.get("project"):
+        show_project = False
+
     for issue in issues:
-        click.echo(Issue(**issue).as_row())
+        click.echo(Issue(**issue).as_row(show_project=show_project))
 
 
 @cli.command()
