@@ -381,7 +381,12 @@ def update(ctx, redmine, issue_id, **kwargs):
         click.echo(click.style(msg, fg="green"), err=True)
 
 
-@cli.command()
+@cli.group()
+def list():
+    """ List various resources """
+    pass
+
+@list.command()
 @click.pass_obj
 def projects(redmine):
     """ List projects """
@@ -392,7 +397,7 @@ def projects(redmine):
         click.echo(Project(**project))
 
 
-@cli.command()
+@list.command()
 @click.pass_obj
 def trackers(redmine):
     """ List trackers """
@@ -403,7 +408,7 @@ def trackers(redmine):
         click.echo(Tracker(**tracker))
 
 
-@cli.command()
+@list.command()
 @click.pass_obj
 def statuses(redmine):
     """ List statuses """
@@ -414,7 +419,7 @@ def statuses(redmine):
         click.echo(IssueStatus(**status))
 
 
-@cli.command()
+@list.command()
 @click.pass_obj
 def queries(redmine):
     """ List queries """
@@ -425,7 +430,7 @@ def queries(redmine):
         click.echo(Query(**query))
 
 
-@cli.command()
+@list.command()
 @click.pass_obj
 def priorities(redmine):
     """ List priorities """
@@ -439,7 +444,7 @@ def priorities(redmine):
         click.echo(Priority(**priority))
 
 
-@cli.command()
+@list.command()
 @click.pass_obj
 def users(redmine):
     """ List users """
