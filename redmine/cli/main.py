@@ -354,8 +354,12 @@ def create(redmine, *args, **kwargs):
     default=None
 )
 @click.pass_obj
-def update(redmine, issue_id, **kwargs):
+@click.pass_context
+def update(ctx, redmine, issue_id, **kwargs):
     """ Update issue """
+
+    if ctx.parent.alias:
+        kwargs.update(ctx.parent.params)
 
     if kwargs.get("edit"):
         kwargs["description"] = get_description()
