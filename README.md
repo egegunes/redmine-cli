@@ -23,28 +23,23 @@ Options:
   -h, --help            Show this message and exit.
 
 Commands:
-  create      Create new issue
-  issues      List issues
-  me          List issues assigned to requester
-  open        Open issue in browser
-  priorities  List priorities
-  projects    List projects
-  queries     List queries
-  show        Show issue details
-  statuses    List statuses
-  trackers    List trackers
-  update      Update issue
-  users       List users
-  version     Print version
+  create   Create new issue
+  issues   List issues
+  list     List various resources
+  open     Open issue in browser
+  show     Show issue details
+  update   Update issue
+  version  Print version
 
 ```
 
 ## Aliases
 
-You can define aliases for issue filtering commands. For example:
+You can define aliases for ~issue filtering~ all commands:
 
 ```
 [aliases]
-wip = issues --query 44
-blocked = me --status 7
+wip = issues --status 2
+blocked = issues --status 7
+in_progress = update --status 2
 ```
