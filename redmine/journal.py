@@ -20,7 +20,9 @@ class Journal:
             "fixed_version_id": "Version",
             "done_ratio": "Done",
             "project_id": "Project",
-            "description": "Description"
+            "description": "Description",
+            "subject": "Subject",
+            "relates": "Relates"
         }
         self.statuses = {str(s["id"]): s["name"]
                          for s in kwargs.get("statuses", {})}
