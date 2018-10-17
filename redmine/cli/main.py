@@ -37,86 +37,6 @@ def cli(ctx, cfg, **kwargs):
 
 @cli.command()
 @click.option(
-    OPTIONS["status"]["long"],
-    OPTIONS["status"]["short"],
-    default=None
-)
-@click.option(
-    OPTIONS["tracker"]["long"],
-    OPTIONS["tracker"]["short"],
-    default=None
-)
-@click.option(
-    OPTIONS["project"]["long"],
-    OPTIONS["project"]["short"],
-    default=None
-)
-@click.option(
-    OPTIONS["priority"]["long"],
-    OPTIONS["priority"]["short"],
-    default=None
-)
-@click.option(
-    OPTIONS["start"]["long"],
-    OPTIONS["start"]["short"],
-    default=None
-)
-@click.option(
-    OPTIONS["due"]["long"],
-    OPTIONS["due"]["short"],
-    default=None
-)
-@click.option(
-    OPTIONS["done"]["long"],
-    OPTIONS["done"]["short"],
-    default=None
-)
-@click.option(
-    OPTIONS["parent"]["long"],
-    OPTIONS["parent"]["short"],
-    default=None
-)
-@click.option(
-    OPTIONS["limit"]["long"],
-    OPTIONS["limit"]["short"],
-    default=25
-)
-@click.option(
-    OPTIONS["sort"]["long"],
-    OPTIONS["sort"]["short"],
-    default="id:desc"
-)
-@click.option(OPTIONS["updated-on"]["long"], default=None)
-@click.option(OPTIONS["updated-after"]["long"], default=None)
-@click.option(OPTIONS["updated-before"]["long"], default=None)
-@click.option(OPTIONS["created-on"]["long"], default=None)
-@click.option(OPTIONS["created-after"]["long"], default=None)
-@click.option(OPTIONS["created-before"]["long"], default=None)
-@click.pass_obj
-@click.pass_context
-def me(ctx, redmine, **kwargs):
-    """ List issues assigned to requester """
-
-    if not redmine.me:
-        msg = "redmine: Please add your user id to use `me` command"
-        return click.echo(click.style(msg, fg="red"), err=True)
-
-    if ctx.parent.alias:
-        kwargs.update(ctx.parent.params)
-
-    issues = redmine.get_issues(assignee=redmine.me, **kwargs)
-
-    show_project = True
-    if kwargs.get("project"):
-        show_project = False
-
-    for issue in issues:
-        click.echo(Issue(**issue).as_row(show_assignee=False,
-                                         show_project=show_project))
-
-
-@cli.command()
-@click.option(
     OPTIONS["assignee"]["long"],
     OPTIONS["assignee"]["short"],
     default=None
@@ -193,11 +113,17 @@ def issues(ctx, redmine, **kwargs):
     issues = redmine.get_issues(**kwargs)
 
     show_project = True
+    show_assignee = True
+
     if kwargs.get("project"):
         show_project = False
 
+    if kwargs.get("assignee"):
+        show_assignee = False
+
     for issue in issues:
-        click.echo(Issue(**issue).as_row(show_project=show_project))
+        click.echo(Issue(**issue).as_row(show_assignee=show_assignee,
+                                         show_project=show_project))
 
 
 @cli.command()
