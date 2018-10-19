@@ -134,21 +134,23 @@ class Redmine:
             headers=self.auth_header
         )
 
+        resp.raise_for_status()
+
         return resp.json()["issues"]
 
     def get_issue(self, issue_id, journals):
         query_params = {}
         if journals:
             query_params["include"] = "journals"
-        r = requests.get(
+        resp = requests.get(
             f"{self.url}/issues/{issue_id}.json",
             params=query_params,
             headers=self.auth_header
         )
 
-        issue = r.json()["issue"]
+        resp.raise_for_status()
 
-        return issue
+        return resp.json()["issue"]
 
     def update_issue(self, issue_id, **kwargs):
         fields = {

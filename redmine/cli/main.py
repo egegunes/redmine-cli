@@ -1,6 +1,7 @@
 from collections import OrderedDict
 
 import click
+from requests.exceptions import HTTPError
 
 from redmine.cli.alias import AliasedGroup
 from redmine.cli.config import pass_config
@@ -110,7 +111,10 @@ def issues(ctx, redmine, **kwargs):
     if ctx.parent.alias:
         kwargs.update(ctx.parent.params)
 
-    issues = redmine.get_issues(**kwargs)
+    try:
+        issues = redmine.get_issues(**kwargs)
+    except HTTPError as e:
+        return click.echo(click.style(f"Fatal: {e}", fg="red"))
 
     show_project = True
     show_assignee = True
@@ -137,7 +141,10 @@ def issues(ctx, redmine, **kwargs):
 def show(redmine, issue_id, journals):
     """ Show issue details """
 
-    issue = redmine.get_issue(issue_id, journals)
+    try:
+        issue = redmine.get_issue(issue_id, journals)
+    except HTTPError as e:
+        return click.echo(click.style(f"Fatal: {e}", fg="red"))
 
     issue = Issue(**issue,
                   statuses=redmine.statuses,
@@ -216,7 +223,10 @@ def create(redmine, *args, **kwargs):
     if kwargs.get("edit"):
         kwargs["description"] = get_description()
 
-    issue = redmine.create_issue(**kwargs)
+    try:
+        issue = redmine.create_issue(**kwargs)
+    except HTTPError as e:
+        return click.echo(click.style(f"Fatal: {e}", fg="red"))
 
     click.echo(Issue(**issue).as_row())
 
@@ -300,7 +310,10 @@ def update(ctx, redmine, issue_id, **kwargs):
         kwargs["description"] = get_description()
         kwargs["note"] = get_note()
 
-    updated = redmine.update_issue(issue_id, **kwargs)
+    try:
+        updated = redmine.update_issue(issue_id, **kwargs)
+    except HTTPError as e:
+        return click.echo(click.style(f"Fatal: {e}", fg="red"))
 
     if updated:
         msg = f"Issue {issue_id} updated."
@@ -318,7 +331,10 @@ def list():
 def projects(redmine):
     """ List projects """
 
-    projects = sorted(redmine.get("projects"), key=lambda x: x['name'])
+    try:
+        projects = sorted(redmine.get("projects"), key=lambda x: x['name'])
+    except HTTPError as e:
+        return click.echo(click.style(f"Fatal: {e}", fg="red"))
 
     for project in projects:
         click.echo(Project(**project))
@@ -329,7 +345,10 @@ def projects(redmine):
 def trackers(redmine):
     """ List trackers """
 
-    trackers = sorted(redmine.get("trackers"), key=lambda x: x['id'])
+    try:
+        trackers = sorted(redmine.get("trackers"), key=lambda x: x['id'])
+    except HTTPError as e:
+        return click.echo(click.style(f"Fatal: {e}", fg="red"))
 
     for tracker in trackers:
         click.echo(Tracker(**tracker))
@@ -340,7 +359,10 @@ def trackers(redmine):
 def statuses(redmine):
     """ List statuses """
 
-    statuses = sorted(redmine.get("issue_statuses"), key=lambda x: x['id'])
+    try:
+        statuses = sorted(redmine.get("issue_statuses"), key=lambda x: x['id'])
+    except HTTPError as e:
+        return click.echo(click.style(f"Fatal: {e}", fg="red"))
 
     for status in statuses:
         click.echo(IssueStatus(**status))
@@ -351,7 +373,10 @@ def statuses(redmine):
 def queries(redmine):
     """ List queries """
 
-    queries = sorted(redmine.get("queries"), key=lambda x: x['id'])
+    try:
+        queries = sorted(redmine.get("queries"), key=lambda x: x['id'])
+    except HTTPError as e:
+        return click.echo(click.style(f"Fatal: {e}", fg="red"))
 
     for query in queries:
         click.echo(Query(**query))
@@ -362,10 +387,13 @@ def queries(redmine):
 def priorities(redmine):
     """ List priorities """
 
-    priorities = sorted(
-        redmine.get("enumerations/issue_priorities"),
-        key=lambda x: x['id']
-    )
+    try:
+        priorities = sorted(
+            redmine.get("enumerations/issue_priorities"),
+            key=lambda x: x['id']
+        )
+    except HTTPError as e:
+        return click.echo(click.style(f"Fatal: {e}", fg="red"))
 
     for priority in priorities:
         click.echo(Priority(**priority))
@@ -376,9 +404,12 @@ def priorities(redmine):
 def users(redmine):
     """ List users """
 
-    users = OrderedDict(
-        sorted(redmine.get_users().items(), key=lambda x: x[1])
-    )
+    try:
+        users = OrderedDict(
+            sorted(redmine.get_users().items(), key=lambda x: x[1])
+        )
+    except HTTPError as e:
+        return click.echo(click.style(f"Fatal: {e}", fg="red"))
 
     for user_id, name in users.items():
         click.echo(User(user_id, name))
