@@ -7,7 +7,11 @@ import requests
 
 
 class Redmine:
-    def __init__(self, url, api_key, invalidate_cache=False):
+    def __init__(self,
+                 url,
+                 api_key,
+                 invalidate_cache=False,
+                 cache_initial=True):
         self.url = url
         self.auth_header = {"X-Redmine-API-Key": api_key}
 
@@ -21,10 +25,11 @@ class Redmine:
                 if os.path.isfile(f_path):
                     os.unlink(f_path)
 
-        self.statuses = self.get("issue_statuses")
-        self.priorities = self.get("enumerations/issue_priorities")
-        self.projects = self.get("projects")
-        self.users = self.get_users()
+        if cache_initial:
+            self.statuses = self.get("issue_statuses")
+            self.priorities = self.get("enumerations/issue_priorities")
+            self.projects = self.get("projects")
+            self.users = self.get_users()
 
     def __repr__(self):
         return f"Redmine({self.url})"

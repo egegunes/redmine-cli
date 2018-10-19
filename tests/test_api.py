@@ -8,7 +8,10 @@ from redmine.redmine import Redmine
 from .response import MockResponse
 
 
-redmine = Redmine("http://example.com", "API_KEY", invalidate_cache=False)
+redmine = Redmine("http://example.com",
+                  "API_KEY",
+                  invalidate_cache=False,
+                  cache_initial=False)
 
 
 @patch("redmine.redmine.requests.get")
@@ -60,7 +63,7 @@ def test_fetch_with_server_error(mock_get):
     mock_get.return_value = MockResponse(500, {})
 
     with pytest.raises(HTTPError):
-        response = redmine.fetch("projects")
+        redmine.fetch("projects")
 
 
 @patch("redmine.redmine.requests.get")
@@ -68,7 +71,7 @@ def test_fetch_with_bad_request(mock_get):
     mock_get.return_value = MockResponse(400, {})
 
     with pytest.raises(HTTPError):
-        response = redmine.fetch("projects")
+        redmine.fetch("projects")
 
 
 @patch("redmine.redmine.requests.get")
@@ -76,4 +79,4 @@ def test_fetch_with_not_found(mock_get):
     mock_get.return_value = MockResponse(404, {})
 
     with pytest.raises(HTTPError):
-        response = redmine.fetch("projects")
+        redmine.fetch("projects")

@@ -85,6 +85,7 @@ class Journal:
             elif detail.get("new_value"):
                 update_detail += f"\t‣ {prefix} set to {detail['new_value']}\n"
             else:
-                update_detail += f"\t‣ {prefix} deleted {detail['old_value']}\n"
+                update_detail += f"\t‣ {prefix} deleted" \
+                                 f" {detail['old_value']}\n"
 
         return update_detail

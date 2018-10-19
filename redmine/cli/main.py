@@ -314,6 +314,7 @@ def list():
     """ List various resources """
     pass
 
+
 @list.command()
 @click.pass_obj
 def projects(redmine):
