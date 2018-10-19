@@ -7,10 +7,9 @@ import requests
 
 
 class Redmine:
-    def __init__(self, url, api_key, me, invalidate_cache):
+    def __init__(self, url, api_key, invalidate_cache=False):
         self.url = url
         self.auth_header = {"X-Redmine-API-Key": api_key}
-        self.me = me
 
         self.cache_dir = os.path.join(os.getenv("HOME"), ".cache/redmine")
         if not os.path.exists(self.cache_dir):
