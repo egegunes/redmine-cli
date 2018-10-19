@@ -6,7 +6,6 @@ from redmine.cli.alias import AliasedGroup
 from redmine.cli.config import pass_config
 from redmine.cli.helpers import get_description, get_note
 from redmine.cli.options import OPTIONS
-
 from redmine.issue import Issue, IssueStatus
 from redmine.priority import Priority
 from redmine.project import Project
@@ -14,7 +13,6 @@ from redmine.query import Query
 from redmine.redmine import Redmine
 from redmine.tracker import Tracker
 from redmine.user import User
-
 
 CONTEXT_SETTINGS = {
     "help_option_names": ['-h', '--help']

@@ -1,7 +1,7 @@
+from collections import defaultdict
 from textwrap import wrap
 
 from redmine.journal import Journal
-from collections import defaultdict
 
 
 class Issue:
