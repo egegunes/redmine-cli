@@ -1,4 +1,4 @@
-# Redmine CLI [![Build Status](https://travis-ci.com/egegunes/redmine-cli.svg?branch=master)](https://travis-ci.com/egegunes/redmine-cli)
+# Redmine CLI [![Build Status](https://travis-ci.com/egegunes/redmine-cli.svg?branch=master)](https://travis-ci.com/egegunes/redmine-cli) [![Coverage Status](https://coveralls.io/repos/github/egegunes/redmine-cli/badge.svg?branch=master)](https://coveralls.io/github/egegunes/redmine-cli?branch=master)
 
 ## Installation
 

@@ -3,3 +3,4 @@ isort
 ipdb
 pytest
 pytest-cov
+coveralls

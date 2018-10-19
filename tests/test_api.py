@@ -8,7 +8,7 @@ from redmine.redmine import Redmine
 from .response import MockResponse
 
 
-redmine = Redmine("http://example.com", "API_KEY", None)
+redmine = Redmine("http://example.com", "API_KEY", None, invalidate_cache=False)
 
 
 @patch("redmine.redmine.requests.get")
