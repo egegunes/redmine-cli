@@ -2,3 +2,4 @@ venv
 *.pyc
 config.*
 *.egg-info
+.coverage
