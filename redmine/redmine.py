@@ -48,6 +48,10 @@ class Redmine:
 
         return resp.json()
 
+    def set_cache(self, cache_file, data):
+        with open(cache_file, "w+") as cf:
+            cf.write(json.dumps(data))
+
     def get(self, resource):
         # Some resources (i.e issue_priorities) have paths that contain "/"
         rname = resource.split("/")[-1]
@@ -58,8 +62,7 @@ class Redmine:
         else:
             data = self.fetch(resource)
             if resource in data:
-                with open(cache_file, "w+") as cf:
-                    cf.write(json.dumps(data))
+                self.set_cache(cache_file, data)
 
         return data[rname]
 
