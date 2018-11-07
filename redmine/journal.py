@@ -17,6 +17,7 @@ class Journal:
             "blocks": "Blocks",
             "blocked": "Blocked by",
             "priority_id": "Priority",
+            "tracker_id": "Tracker",
             "fixed_version_id": "Version",
             "done_ratio": "Done",
             "project_id": "Project",
