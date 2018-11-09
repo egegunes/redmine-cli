@@ -38,7 +38,7 @@ class Issue:
         return issue
 
     def get_header(self):
-        header = f"Issue #{self.id} {self.subject}\n"
+        header = f"Issue #{self.id} - {self.subject}\n\n"
 
         created_on = datetime.strptime(self.created_on, "%Y-%m-%dT%H:%M:%SZ")
         header += f"Reported by {self.author['name']} on {created_on.date()} {created_on.time()}\n\n"
@@ -48,12 +48,18 @@ class Issue:
         header += f"Status: {self.status['name']}\n"
         header += f"Priority: {self.priority['name']}\n"
         header += f"Author: {self.author['name']}\n"
-        header += f"Assigned to: {self.assigned_to['name']}\n"
-        header += f"Start date: {self.start_date}\n"
-        header += f"Due date: {self.due_date}\n"
-        header += f"Done: {self.done}\n\n"
+
+        if self.assigned_to is not None:
+            header += f"Assigned to: {self.assigned_to['name']}\n"
+        if self.start_date is not None:
+            header += f"Start date: {self.start_date}\n"
+        if self.due_date is not None:
+            header += f"Due date: {self.due_date}\n"
+        if self.done is not None:
+            header += f"Done: {self.done}\n"
 
         description = wrap(self.description, width=79)
+        header += "\n"
         for d in description:
             header += f"{d}\n"
 
