@@ -1,4 +1,5 @@
 from collections import defaultdict
+from datetime import datetime
 from textwrap import wrap
 
 from redmine.journal import Journal
@@ -17,6 +18,7 @@ class Issue:
         self.done = kwargs.get("done")
         self.start_date = kwargs.get("start_date")
         self.due_date = kwargs.get("due_date")
+        self.created_on = kwargs.get("created_on")
         self.description = kwargs.get("description", '')
         self.journals = kwargs.get("journals")
         self.done_ratio = kwargs.get("done_ratio")
@@ -37,6 +39,10 @@ class Issue:
 
     def get_header(self):
         header = f"Issue #{self.id} {self.subject}\n"
+
+        created_on = datetime.strptime(self.created_on, "%Y-%m-%dT%H:%M:%SZ")
+        header += f"Reported by {self.author['name']} on {created_on.date()} {created_on.time()}\n\n"
+
         header += f"Project: {self.project['name']}\n"
         header += f"Tracker: {self.tracker['name']}\n"
         header += f"Status: {self.status['name']}\n"
