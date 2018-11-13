@@ -47,7 +47,6 @@ class Issue:
         header += f"Tracker: {self.tracker['name']}\n"
         header += f"Status: {self.status['name']}\n"
         header += f"Priority: {self.priority['name']}\n"
-        header += f"Author: {self.author['name']}\n"
 
         if self.assigned_to is not None:
             header += f"Assigned to: {self.assigned_to['name']}\n"
