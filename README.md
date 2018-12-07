@@ -3,9 +3,7 @@
 ## Installation
 
 ```
-python3 -m venv venv
-source venv/bin/activate
-make install
+$ pip3 install --user redminecli
 ```
 
 The client looks for the config in three places: `~/.redmine.conf`,
