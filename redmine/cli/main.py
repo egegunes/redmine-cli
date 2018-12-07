@@ -426,7 +426,7 @@ def version():
     kernel = platform.release()
     python_version = platform.python_version()
 
-    pkg_name = "redmine-cli"
+    pkg_name = "redminecli"
     version = pkg_resources.require(pkg_name)[0].version
 
     msg = f"{pkg_name} {version} Python {python_version} {system} {kernel}"
