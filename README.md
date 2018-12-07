@@ -6,10 +6,16 @@
 $ pip3 install --user redminecli
 ```
 
+## Configuration
+
 The client looks for the config in three places: `~/.redmine.conf`,
 `~/.redmine/redmine.conf` and `~/.config/redmine/redmine.conf`.
 
-Put your Redmine instance's url and api key under `[redmine]` section.
+```
+[redmine]
+url=https://example.com
+key=APIKEY
+```
 
 ## Usage
 
