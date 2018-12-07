@@ -41,7 +41,8 @@ class Issue:
         header = f"Issue #{self.id} - {self.subject}\n\n"
 
         created_on = datetime.strptime(self.created_on, "%Y-%m-%dT%H:%M:%SZ")
-        header += f"Reported by {self.author['name']} on {created_on.date()} {created_on.time()}\n\n"
+        header += f"Reported by {self.author['name']} on"\
+                  f"{created_on.date()} {created_on.time()}\n\n"
 
         header += f"Project: {self.project['name']}\n"
         header += f"Tracker: {self.tracker['name']}\n"
