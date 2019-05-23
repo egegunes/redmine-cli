@@ -15,6 +15,10 @@ OPTIONS = {
         "long": "--priority",
         "short": "-p"
     },
+    "version": {
+        "long": "--version",
+        "short": "-v"
+    },
     "assignee": {
         "long": "--assignee",
         "short": "-a"

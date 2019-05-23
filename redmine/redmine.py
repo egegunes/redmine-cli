@@ -118,6 +118,7 @@ class Redmine:
             "tracker_id": kwargs.get("tracker"),
             "project_id": kwargs.get("project"),
             "priority_id": kwargs.get("priority"),
+            "fixed_version_id": kwargs.get("version"),
             "query_id": kwargs.get("query"),
             "parent_id": kwargs.get("parent"),
             "start_date": kwargs.get("start"),

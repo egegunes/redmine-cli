@@ -14,6 +14,7 @@ from redmine.query import Query
 from redmine.redmine import Redmine
 from redmine.tracker import Tracker
 from redmine.user import User
+from redmine.version import Version
 
 CONTEXT_SETTINGS = {
     "help_option_names": ['-h', '--help']
@@ -60,6 +61,11 @@ def cli(ctx, cfg, **kwargs):
 @click.option(
     OPTIONS["priority"]["long"],
     OPTIONS["priority"]["short"],
+    default=None
+)
+@click.option(
+    OPTIONS["version"]["long"],
+    OPTIONS["version"]["short"],
     default=None
 )
 @click.option(
@@ -413,6 +419,34 @@ def users(redmine):
 
     for user_id, name in users.items():
         click.echo(User(user_id, name))
+
+
+@cli.group()
+@click.argument("project_id")
+@click.pass_context
+def project(context, project_id):
+    """ Project commands """
+    context.obj.project_id = project_id
+
+
+@project.command()
+@click.pass_context
+def versions(context):
+    """ List versions of a project """
+
+    redmine = context.obj
+    project_id = context.obj.project_id
+
+    try:
+        versions = sorted(
+            redmine.get(f"projects/{project_id}/versions"),
+            key=lambda x: x["id"]
+        )
+    except HTTPError as e:
+        return click.echo(click.style(f"Fatal: {e}", fg="red"))
+
+    for version in versions:
+        click.echo(Version(**version))
 
 
 @cli.command()
