@@ -2,5 +2,4 @@ flake8
 isort
 ipdb
 pytest
-pytest-cov
 coveralls
