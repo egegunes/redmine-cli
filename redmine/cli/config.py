@@ -16,9 +16,16 @@ class Config:
         self.api_key = None
         self.me = None
         self.aliases = {}
-        self.read()
 
-    def read(self):
+        URL = os.getenv("REDMINE_URL")
+        API_KEY = os.getenv("REDMINE_API_KEY")
+        if URL and API_KEY:
+            self.url = URL
+            self.api_key = API_KEY
+        else:
+            self.read_from_file()
+
+    def read_from_file(self):
         config = configparser.ConfigParser()
 
         for path in self.paths:
