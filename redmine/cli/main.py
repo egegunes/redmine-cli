@@ -34,6 +34,7 @@ def cli(ctx, cfg, **kwargs):
 
 
 @cli.command()
+@click.argument("issue_ids", nargs=-1)
 @click.option(OPTIONS["assignee"]["long"], OPTIONS["assignee"]["short"], default=None)
 @click.option(OPTIONS["status"]["long"], OPTIONS["status"]["short"], default=None)
 @click.option(OPTIONS["tracker"]["long"], OPTIONS["tracker"]["short"], default=None)
@@ -55,11 +56,14 @@ def cli(ctx, cfg, **kwargs):
 @click.option(OPTIONS["created-before"]["long"], default=None)
 @click.pass_obj
 @click.pass_context
-def issues(ctx, redmine, **kwargs):
+def issues(ctx, redmine, issue_ids, **kwargs):
     """ List issues """
 
     if ctx.parent.alias:
         kwargs.update(ctx.parent.params)
+
+    if issue_ids:
+        kwargs = {"issue_id": ",".join(issue_ids)}
 
     try:
         issues = redmine.get_issues(**kwargs)

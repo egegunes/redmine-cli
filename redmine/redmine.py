@@ -124,6 +124,10 @@ class Redmine:
             "limit": kwargs.get("limit"),
             "sort": kwargs.get("sort"),
         }
+
+        if kwargs.get("issue_id"):
+            query_params = {"issue_id": kwargs.get("issue_id")}
+
         resp = requests.get(
             f"{self.url}/issues.json", params=query_params, headers=self.auth_header
         )
