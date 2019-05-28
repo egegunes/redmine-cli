@@ -1,7 +1,7 @@
 dev-requirements:
 	pip install -r dev-requirements.txt
 lint:
-	flake8 redmine/ tests/
+	flake8 --max-line-length 88 redmine/ tests/
 	isort -rc -c redmine/ tests/
 install:
 	pip install -e .
