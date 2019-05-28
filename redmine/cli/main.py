@@ -258,6 +258,13 @@ def user(redmine):
         click.echo(User(user_id, name))
 
 
+@list.command()
+@pass_config
+def alias(config):
+    for alias, command in config.aliases.items():
+        click.echo(f"{alias}={command}")
+
+
 @cli.group()
 @click.argument("project_id")
 @click.pass_context
