@@ -7,11 +7,7 @@ import requests
 
 
 class Redmine:
-    def __init__(self,
-                 url,
-                 api_key,
-                 invalidate_cache=False,
-                 cache_initial=True):
+    def __init__(self, url, api_key, invalidate_cache=False, cache_initial=True):
         self.url = url
         self.auth_header = {"X-Redmine-API-Key": api_key}
 
@@ -41,7 +37,7 @@ class Redmine:
         resp = requests.get(
             urljoin(self.url, "{}.json".format(resource)),
             params={"limit": 100},
-            headers=self.auth_header
+            headers=self.auth_header,
         )
 
         resp.raise_for_status()
@@ -74,8 +70,7 @@ class Redmine:
         else:
             memberships = []
 
-            with click.progressbar(self.projects,
-                                   label="Caching users") as projects:
+            with click.progressbar(self.projects, label="Caching users") as projects:
                 for project in projects:
                     resource = "projects/{}/memberships".format(project["id"])
                     response = self.fetch(resource)
@@ -127,12 +122,10 @@ class Redmine:
             "updated_on": updated_on,
             "created_on": created_on,
             "limit": kwargs.get("limit"),
-            "sort": kwargs.get("sort")
+            "sort": kwargs.get("sort"),
         }
         resp = requests.get(
-            f"{self.url}/issues.json",
-            params=query_params,
-            headers=self.auth_header
+            f"{self.url}/issues.json", params=query_params, headers=self.auth_header
         )
 
         resp.raise_for_status()
@@ -146,7 +139,7 @@ class Redmine:
         resp = requests.get(
             f"{self.url}/issues/{issue_id}.json",
             params=query_params,
-            headers=self.auth_header
+            headers=self.auth_header,
         )
 
         resp.raise_for_status()
@@ -176,9 +169,7 @@ class Redmine:
                 del fields["issue"][field]
 
         resp = requests.put(
-            f"{self.url}/issues/{issue_id}.json",
-            json=fields,
-            headers=self.auth_header
+            f"{self.url}/issues/{issue_id}.json", json=fields, headers=self.auth_header
         )
 
         resp.raise_for_status()
@@ -202,9 +193,7 @@ class Redmine:
             }
         }
         resp = requests.post(
-            f"{self.url}/issues.json",
-            json=fields,
-            headers=self.auth_header
+            f"{self.url}/issues.json", json=fields, headers=self.auth_header
         )
 
         resp.raise_for_status()

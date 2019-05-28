@@ -23,12 +23,12 @@ class Journal:
             "project_id": "Project",
             "description": "Description",
             "subject": "Subject",
-            "relates": "Relates"
+            "relates": "Relates",
         }
-        self.statuses = {str(s["id"]): s["name"]
-                         for s in kwargs.get("statuses", {})}
-        self.priorities = {str(p["id"]): p["name"]
-                           for p in kwargs.get("priorities", {})}
+        self.statuses = {str(s["id"]): s["name"] for s in kwargs.get("statuses", {})}
+        self.priorities = {
+            str(p["id"]): p["name"] for p in kwargs.get("priorities", {})
+        }
         self.users = kwargs.get("users")
 
     def __repr__(self):
@@ -80,13 +80,14 @@ class Journal:
                     detail["old_value"] = self.users[detail["old_value"]]
                     detail["new_value"] = self.users[detail["new_value"]]
 
-                update_detail += f"\t‣ {prefix} changed from " \
-                                 f"{detail['old_value']} to " \
-                                 f"{detail['new_value']}\n"
+                update_detail += (
+                    f"\t‣ {prefix} changed from "
+                    f"{detail['old_value']} to "
+                    f"{detail['new_value']}\n"
+                )
             elif detail.get("new_value"):
                 update_detail += f"\t‣ {prefix} set to {detail['new_value']}\n"
             else:
-                update_detail += f"\t‣ {prefix} deleted" \
-                                 f" {detail['old_value']}\n"
+                update_detail += f"\t‣ {prefix} deleted" f" {detail['old_value']}\n"
 
         return update_detail

@@ -7,10 +7,9 @@ from redmine.redmine import Redmine
 
 from .response import MockResponse
 
-redmine = Redmine("http://example.com",
-                  "API_KEY",
-                  invalidate_cache=False,
-                  cache_initial=False)
+redmine = Redmine(
+    "http://example.com", "API_KEY", invalidate_cache=False, cache_initial=False
+)
 
 
 @patch("redmine.redmine.requests.get")
@@ -24,7 +23,7 @@ def test_fetch(mock_get):
                 "description": "Description",
                 "status": 1,
                 "created_on": "2018-07-09T13:52:12Z",
-                "updated_on": "2018-07-09T13:52:12Z"
+                "updated_on": "2018-07-09T13:52:12Z",
             },
             {
                 "id": 2,
@@ -33,12 +32,12 @@ def test_fetch(mock_get):
                 "description": "Description",
                 "status": 1,
                 "created_on": "2018-07-09T13:52:12Z",
-                "updated_on": "2018-07-09T13:52:12Z"
-            }
+                "updated_on": "2018-07-09T13:52:12Z",
+            },
         ],
         "total_count": 2,
         "offset": 0,
-        "limit": 25
+        "limit": 25,
     }
     mock_get.return_value = MockResponse(200, expected)
 

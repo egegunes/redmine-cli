@@ -10,7 +10,7 @@ class Config:
         self.paths = [
             os.path.join(HOME, ".redmine.conf"),
             os.path.join(HOME, ".redmine/redmine.conf"),
-            os.path.join(HOME, ".config/redmine/redmine.conf")
+            os.path.join(HOME, ".config/redmine/redmine.conf"),
         ]
         self.url = None
         self.api_key = None

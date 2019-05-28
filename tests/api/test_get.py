@@ -3,10 +3,9 @@ from unittest.mock import MagicMock, patch
 
 from redmine.redmine import Redmine
 
-redmine = Redmine("http://example.com",
-                  "API_KEY",
-                  invalidate_cache=False,
-                  cache_initial=False)
+redmine = Redmine(
+    "http://example.com", "API_KEY", invalidate_cache=False, cache_initial=False
+)
 
 
 def test_get_projects_calls_fetch_when_no_cache():
@@ -14,6 +13,7 @@ def test_get_projects_calls_fetch_when_no_cache():
 
     with patch.object(Redmine, "fetch") as mock_fetch:
         import os
+
         os.path.exists = MagicMock(return_value=False)
         redmine.get(resource)
 
@@ -39,6 +39,7 @@ def test_get_trackers_calls_fetch_when_no_cache():
 
     with patch.object(Redmine, "fetch") as mock_fetch:
         import os
+
         os.path.exists = MagicMock(return_value=False)
         redmine.get(resource)
 
@@ -64,6 +65,7 @@ def test_get_statuses_calls_fetch_when_no_cache():
 
     with patch.object(Redmine, "fetch") as mock_fetch:
         import os
+
         os.path.exists = MagicMock(return_value=False)
         redmine.get(resource)
 
@@ -89,6 +91,7 @@ def test_get_priorities_calls_fetch_when_no_cache():
 
     with patch.object(Redmine, "fetch") as mock_fetch:
         import os
+
         os.path.exists = MagicMock(return_value=False)
         redmine.get(resource)
 
@@ -114,6 +117,7 @@ def test_get_queries_calls_fetch_when_no_cache():
 
     with patch.object(Redmine, "fetch") as mock_fetch:
         import os
+
         os.path.exists = MagicMock(return_value=False)
         redmine.get(resource)
 

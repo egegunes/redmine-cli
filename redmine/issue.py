@@ -19,7 +19,7 @@ class Issue:
         self.start_date = kwargs.get("start_date")
         self.due_date = kwargs.get("due_date")
         self.created_on = kwargs.get("created_on")
-        self.description = kwargs.get("description", '')
+        self.description = kwargs.get("description", "")
         self.journals = kwargs.get("journals")
         self.done_ratio = kwargs.get("done_ratio")
         self.statuses = kwargs.get("statuses")
@@ -41,8 +41,10 @@ class Issue:
         header = f"Issue #{self.id} - {self.subject}\n\n"
 
         created_on = datetime.strptime(self.created_on, "%Y-%m-%dT%H:%M:%SZ")
-        header += f"Reported by {self.author['name']} on"\
-                  f"{created_on.date()} {created_on.time()}\n\n"
+        header += (
+            f"Reported by {self.author['name']} on"
+            f"{created_on.date()} {created_on.time()}\n\n"
+        )
 
         header += f"Project: {self.project['name']}\n"
         header += f"Tracker: {self.tracker['name']}\n"
@@ -68,10 +70,14 @@ class Issue:
     def get_journals(self):
         journals = ""
         for journal in self.journals:
-            journals += str(Journal(**journal,
-                                    statuses=self.statuses,
-                                    priorities=self.priorities,
-                                    users=self.users))
+            journals += str(
+                Journal(
+                    **journal,
+                    statuses=self.statuses,
+                    priorities=self.priorities,
+                    users=self.users,
+                )
+            )
 
         return journals
 
