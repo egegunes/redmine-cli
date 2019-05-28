@@ -277,7 +277,7 @@ def project(context, project_id):
 
 @project.command()
 @click.pass_context
-def versions(context):
+def roadmap(context):
     """ List versions of a project """
 
     redmine = context.obj
