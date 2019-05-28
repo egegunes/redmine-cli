@@ -174,7 +174,7 @@ def list():
 
 @list.command()
 @click.pass_obj
-def project(redmine):
+def projects(redmine):
     """ List projects """
 
     try:
