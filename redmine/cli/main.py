@@ -183,7 +183,7 @@ def list():
 
 @list.command()
 @click.pass_obj
-def projects(redmine):
+def project(redmine):
     """ List projects """
 
     try:
@@ -197,7 +197,7 @@ def projects(redmine):
 
 @list.command()
 @click.pass_obj
-def trackers(redmine):
+def tracker(redmine):
     """ List trackers """
 
     try:
@@ -211,7 +211,7 @@ def trackers(redmine):
 
 @list.command()
 @click.pass_obj
-def statuses(redmine):
+def status(redmine):
     """ List statuses """
 
     try:
@@ -225,7 +225,7 @@ def statuses(redmine):
 
 @list.command()
 @click.pass_obj
-def queries(redmine):
+def query(redmine):
     """ List queries """
 
     try:
@@ -239,7 +239,7 @@ def queries(redmine):
 
 @list.command()
 @click.pass_obj
-def priorities(redmine):
+def priority(redmine):
     """ List priorities """
 
     try:
@@ -255,7 +255,7 @@ def priorities(redmine):
 
 @list.command()
 @click.pass_obj
-def users(redmine):
+def user(redmine):
     """ List users """
 
     try:
