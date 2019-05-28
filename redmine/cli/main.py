@@ -66,21 +66,8 @@ def issues(ctx, redmine, **kwargs):
     except HTTPError as e:
         return click.echo(click.style(f"Fatal: {e}", fg="red"))
 
-    show_project = True
-    show_assignee = True
-
-    if kwargs.get("project"):
-        show_project = False
-
-    if kwargs.get("assignee"):
-        show_assignee = False
-
     for issue in issues:
-        click.echo(
-            Issue(**issue).as_row(
-                show_assignee=show_assignee, show_project=show_project
-            )
-        )
+        click.echo(Issue(**issue).as_row())
 
 
 @cli.command()
