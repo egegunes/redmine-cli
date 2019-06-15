@@ -29,7 +29,9 @@ CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 @pass_config
 @click.pass_context
 def cli(ctx, cfg, **kwargs):
-    redmine = Redmine(cfg.url, cfg.api_key, invalidate_cache=kwargs.get("force"))
+    redmine = Redmine(
+        cfg.url, cfg.api_key, cfg.ssl_verify, invalidate_cache=kwargs.get("force")
+    )
     ctx.obj = redmine
 
 

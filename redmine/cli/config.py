@@ -14,7 +14,6 @@ class Config:
         ]
         self.url = None
         self.api_key = None
-        self.me = None
         self.aliases = {}
 
         URL = os.getenv("REDMINE_URL")
@@ -35,9 +34,7 @@ class Config:
 
         self.url = config["redmine"]["url"]
         self.api_key = config["redmine"]["key"]
-
-        if "me" in config["redmine"]:
-            self.me = config["redmine"]["me"]
+        self.ssl_verify = config["redmine"].getboolean("ssl_verify")
 
         try:
             self.aliases.update(config.items("aliases"))

@@ -7,9 +7,12 @@ import requests
 
 
 class Redmine:
-    def __init__(self, url, api_key, invalidate_cache=False, cache_initial=True):
+    def __init__(
+        self, url, api_key, ssl_verify=True, invalidate_cache=False, cache_initial=True
+    ):
         self.url = url
         self.auth_header = {"X-Redmine-API-Key": api_key}
+        self.ssl_verify = ssl_verify
 
         self.cache_dir = os.path.join(os.getenv("HOME"), ".cache/redmine")
         if not os.path.exists(self.cache_dir):
@@ -38,6 +41,7 @@ class Redmine:
             urljoin(self.url, "{}.json".format(resource)),
             params={"limit": 100},
             headers=self.auth_header,
+            verify=self.ssl_verify,
         )
 
         resp.raise_for_status()
@@ -129,7 +133,10 @@ class Redmine:
             query_params = {"issue_id": kwargs.get("issue_id")}
 
         resp = requests.get(
-            f"{self.url}/issues.json", params=query_params, headers=self.auth_header
+            f"{self.url}/issues.json",
+            params=query_params,
+            headers=self.auth_header,
+            verify=self.ssl_verify,
         )
 
         resp.raise_for_status()
@@ -144,6 +151,7 @@ class Redmine:
             f"{self.url}/issues/{issue_id}.json",
             params=query_params,
             headers=self.auth_header,
+            verify=self.ssl_verify,
         )
 
         resp.raise_for_status()
@@ -173,7 +181,10 @@ class Redmine:
                 del fields["issue"][field]
 
         resp = requests.put(
-            f"{self.url}/issues/{issue_id}.json", json=fields, headers=self.auth_header
+            f"{self.url}/issues/{issue_id}.json",
+            json=fields,
+            headers=self.auth_header,
+            verify=self.ssl_verify,
         )
 
         resp.raise_for_status()
@@ -197,7 +208,10 @@ class Redmine:
             }
         }
         resp = requests.post(
-            f"{self.url}/issues.json", json=fields, headers=self.auth_header
+            f"{self.url}/issues.json",
+            json=fields,
+            headers=self.auth_header,
+            verify=self.ssl_verify,
         )
 
         resp.raise_for_status()
