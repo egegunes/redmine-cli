@@ -1,3 +1,4 @@
+import json
 from collections import OrderedDict
 
 import click
@@ -56,6 +57,7 @@ def cli(ctx, cfg, **kwargs):
 @click.option(OPTIONS["created-on"]["long"], default=None)
 @click.option(OPTIONS["created-after"]["long"], default=None)
 @click.option(OPTIONS["created-before"]["long"], default=None)
+@click.option(OPTIONS["json"]["long"], default=False, show_default=True)
 @click.pass_obj
 @click.pass_context
 def issues(ctx, redmine, issue_ids, **kwargs):
@@ -71,6 +73,9 @@ def issues(ctx, redmine, issue_ids, **kwargs):
         issues = redmine.get_issues(**kwargs)
     except HTTPError as e:
         return click.echo(click.style(f"Fatal: {e}", fg="red"))
+
+    if kwargs.get("json"):
+        return click.echo(json.dumps(issues))
 
     for issue in issues:
         click.echo(Issue(**issue).as_row())

@@ -24,4 +24,5 @@ OPTIONS = {
     "journals": {"long": "--journals/--no-journals", "short": "-j/-J"},
     "edit": {"long": "--edit/--no-edit", "short": "-e/-E"},
     "force": {"long": "--force/--no-force", "help": "Invalidate cache"},
+    "json": {"long": "--json/--no-json"},
 }
