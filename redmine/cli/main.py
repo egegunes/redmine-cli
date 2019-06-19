@@ -5,7 +5,7 @@ import click
 from requests.exceptions import HTTPError
 
 from redmine.cli.alias import AliasedGroup
-from redmine.cli.config import pass_config
+from redmine.cli.config import Config, pass_config
 from redmine.cli.helpers import get_description, get_note
 from redmine.cli.options import OPTIONS
 from redmine.issue import Issue, IssueStatus
@@ -27,9 +27,10 @@ CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
     show_default=True,
     default=False,
 )
-@pass_config
+@click.option(OPTIONS["account"]["long"])
 @click.pass_context
-def cli(ctx, cfg, **kwargs):
+def cli(ctx, **kwargs):
+    cfg = Config(kwargs.get("account"))
     redmine = Redmine(
         cfg.url, cfg.api_key, cfg.ssl_verify, invalidate_cache=kwargs.get("force")
     )

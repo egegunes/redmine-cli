@@ -5,7 +5,7 @@ import click
 
 
 class Config:
-    def __init__(self, *args, **kwargs):
+    def __init__(self, account=None):
         HOME = os.getenv("HOME")
         self.paths = [
             os.path.join(HOME, ".redmine.conf"),
@@ -15,6 +15,7 @@ class Config:
         self.url = None
         self.api_key = None
         self.aliases = {}
+        self.account = account
 
         URL = os.getenv("REDMINE_URL")
         API_KEY = os.getenv("REDMINE_API_KEY")
@@ -32,9 +33,12 @@ class Config:
                 config.read(path)
                 break
 
-        self.url = config["redmine"]["url"]
-        self.api_key = config["redmine"]["key"]
-        self.ssl_verify = config["redmine"].getboolean("ssl_verify")
+        if self.account is None:
+            self.account = config["accounts"]["default"]
+
+        self.url = config[self.account]["url"]
+        self.api_key = config[self.account]["key"]
+        self.ssl_verify = config[self.account].getboolean("ssl_verify")
 
         try:
             self.aliases.update(config.items("aliases"))
