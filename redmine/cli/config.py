@@ -14,6 +14,7 @@ class Config:
         ]
         self.url = None
         self.api_key = None
+        self.ssl_verify = True
         self.aliases = {}
         self.account = account
 
