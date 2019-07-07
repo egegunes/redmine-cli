@@ -68,7 +68,7 @@ def issues(ctx, redmine, issue_ids, **kwargs):
         kwargs.update(ctx.parent.params)
 
     if issue_ids:
-        kwargs = {"issue_id": ",".join(issue_ids)}
+        kwargs.update({"issue_id": ",".join(issue_ids)})
 
     try:
         issues = redmine.get_issues(**kwargs)
