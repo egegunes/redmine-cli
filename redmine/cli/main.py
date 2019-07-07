@@ -27,7 +27,7 @@ CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
     show_default=True,
     default=False,
 )
-@click.option(OPTIONS["account"]["long"])
+@click.option(OPTIONS["account"]["long"], help=OPTIONS["account"]["help"])
 @click.pass_context
 def cli(ctx, **kwargs):
     cfg = Config(kwargs.get("account"))
