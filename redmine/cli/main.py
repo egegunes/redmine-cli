@@ -85,8 +85,9 @@ def issues(ctx, redmine, issue_ids, **kwargs):
 @cli.command()
 @click.argument("issue_id")
 @click.option(OPTIONS["journals"]["long"], OPTIONS["journals"]["short"], default=True)
+@click.option(OPTIONS["pager"]["long"], default=True)
 @click.pass_obj
-def show(redmine, issue_id, journals):
+def show(redmine, issue_id, journals, pager):
     """ Show issue details """
 
     try:
@@ -102,7 +103,10 @@ def show(redmine, issue_id, journals):
             projects=redmine.projects,
             users=redmine.users,
         )
-        click.echo_via_pager(str(issue))
+        if pager:
+            click.echo_via_pager(str(issue))
+        else:
+            click.echo(str(issue))
     except KeyError:
         return click.echo(click.style(f"Cache is obsolete. Run with --force.", fg="red"))
 

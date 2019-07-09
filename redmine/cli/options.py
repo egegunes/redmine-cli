@@ -26,4 +26,5 @@ OPTIONS = {
     "force": {"long": "--force/--no-force", "help": "Invalidate cache"},
     "json": {"long": "--json/--no-json"},
     "account": {"long": "--account", "help": "Account name to use"},
+    "pager": {"long": "--pager/--no-pager"},
 }
