@@ -94,15 +94,17 @@ def show(redmine, issue_id, journals):
     except HTTPError as e:
         return click.echo(click.style(f"Fatal: {e}", fg="red"))
 
-    issue = Issue(
-        **issue,
-        statuses=redmine.statuses,
-        priorities=redmine.priorities,
-        projects=redmine.projects,
-        users=redmine.users,
-    )
-
-    click.echo_via_pager(str(issue))
+    try:
+        issue = Issue(
+            **issue,
+            statuses=redmine.statuses,
+            priorities=redmine.priorities,
+            projects=redmine.projects,
+            users=redmine.users,
+        )
+        click.echo_via_pager(str(issue))
+    except KeyError:
+        return click.echo(click.style(f"Cache is obsolete. Run with --force.", fg="red"))
 
 
 @cli.command()
