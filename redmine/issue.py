@@ -60,10 +60,11 @@ class Issue:
         if self.done is not None:
             header += f"Done: {self.done}\n"
 
-        description = wrap(self.description, width=79)
-        header += "\n"
-        for d in description:
-            header += f"{d}\n"
+        if self.description is not None:
+            description = wrap(self.description, width=79)
+            header += "\n"
+            for d in description:
+                header += f"{d}\n"
 
         return header
 
