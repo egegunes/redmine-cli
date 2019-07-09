@@ -108,7 +108,9 @@ def show(redmine, issue_id, journals, pager):
         else:
             click.echo(str(issue))
     except KeyError:
-        return click.echo(click.style(f"Cache is obsolete. Run with --force.", fg="red"))
+        return click.echo(
+            click.style(f"Cache is obsolete. Run with --force.", fg="red")
+        )
 
 
 @cli.command()
