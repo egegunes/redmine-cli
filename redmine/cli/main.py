@@ -1,4 +1,5 @@
 import json
+import sys
 from collections import OrderedDict
 
 import click
@@ -30,7 +31,12 @@ CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 @click.option(OPTIONS["account"]["long"], help=OPTIONS["account"]["help"])
 @click.pass_context
 def cli(ctx, **kwargs):
-    cfg = Config(kwargs.get("account"))
+    try:
+        cfg = Config(kwargs.get("account"))
+    except FileNotFoundError as e:
+        click.echo(click.style(f"Fatal: {e}", fg="red"))
+        sys.exit(1)
+
     redmine = Redmine(
         cfg.url, cfg.api_key, cfg.ssl_verify, invalidate_cache=kwargs.get("force")
     )

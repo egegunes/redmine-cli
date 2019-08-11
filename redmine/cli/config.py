@@ -28,11 +28,12 @@ class Config:
 
     def read_from_file(self):
         config = configparser.ConfigParser()
+        config.read(self.paths)
 
-        for path in self.paths:
-            if os.path.isfile(path):
-                config.read(path)
-                break
+        if "accounts" not in config:
+            raise FileNotFoundError(
+                "Config file not found in {}".format(" or ".join(self.paths))
+            )
 
         if self.account is None:
             self.account = config["accounts"]["default"]
