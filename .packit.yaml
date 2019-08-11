@@ -1,0 +1,13 @@
+# See the documentation for more information:
+# https://packit.dev/docs/configuration/
+
+specfile_path: redminecli.spec
+
+# add or remove files that should be synced
+synced_files:
+    - redminecli.spec
+    - .packit.yaml
+
+# change these lines if upstream project name is not the same as downstream
+upstream_project_name: redminecli
+downstream_package_name: redminecli
