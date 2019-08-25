@@ -8,7 +8,7 @@ with open("README.md") as f:
 
 setup(
     name="redminecli",
-    version="1.1.4",
+    version="1.1.5",
     description="Command line interface for Redmine",
     long_description=readme,
     long_description_content_type="text/markdown",
