@@ -14,6 +14,9 @@ Source0:        %{pypi_source}
 BuildArch:      noarch
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
+BuildRequires:  python3-pytest
+BuildRequires:  python3-click
+BuildRequires:  python3-requests
 
 %description
 `redminecli` is a command line interface for Redmine.
@@ -34,6 +37,9 @@ BuildRequires:  python3-setuptools
 %{_bindir}/redmine
 %{python3_sitelib}/redmine/
 %{python3_sitelib}/%{pypi_name}-*.egg-info/
+
+%check
+%{__python3} -m pytest
 
 %changelog
 * Tue Aug 27 2019 Ege Güneş <egegunes@gmail.com> - 1.1.6-1
