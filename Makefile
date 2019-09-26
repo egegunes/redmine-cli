@@ -15,3 +15,5 @@ upload:
 	twine upload dist/*
 clean:
 	rm -rf build dist *.egg-info venv
+venv:
+	python3 -m venv venv
