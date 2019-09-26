@@ -22,5 +22,4 @@ setup(
         [console_scripts]
         redmine=redmine.cli.main:cli
     """,
-    data_files=[("share/doc/redminecli", ["LICENSE"])],
 )
