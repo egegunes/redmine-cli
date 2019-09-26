@@ -16,7 +16,7 @@ class Redmine:
 
         self.cache_dir = os.path.join(os.getenv("HOME"), ".cache/redmine")
         if not os.path.exists(self.cache_dir):
-            os.mkdir(self.cache_dir)
+            os.makedirs(self.cache_dir)
 
         if invalidate_cache:
             for f in os.listdir(self.cache_dir):
