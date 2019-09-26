@@ -3,7 +3,7 @@
 %{?python_enable_dependency_generator}
 
 Name:           %{pypi_name}
-Version:        1.1.6
+Version:        1.1.7
 Release:        1%{?dist}
 Summary:        Command line interface for Redmine
 
@@ -40,6 +40,9 @@ BuildRequires:  python3-requests
 %{__python3} -m pytest
 
 %changelog
+* Thu Sep 26 2019 Ege Güneş <egegunes@gmail.com> - 1.1.7-1
+- Bump to 1.1.7
+
 * Tue Aug 27 2019 Ege Güneş <egegunes@gmail.com> - 1.1.6-1
 - Bump to 1.1.6
 
