@@ -82,12 +82,16 @@ class Redmine:
                         memberships.extend(response["memberships"])
 
             users = {}
+            membership_types = ['user', 'group', 'group_anonymous']
 
             for m in memberships:
-                try:
-                    users[str(m["user"]["id"])] = m["user"]["name"]
-                except KeyError:
-                    users[str(m["group"]["id"])] = m["group"]["name"]
+                for t in membership_types:
+                    try:
+                        users[str(m[t]["id"])] = m[t]["name"]
+                    except KeyError:
+                        continue
+                    else:
+                        break
 
             with open(cache_file, "w+") as cf:
                 cf.write(json.dumps(users))
