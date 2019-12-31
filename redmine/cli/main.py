@@ -1,3 +1,4 @@
+import datetime
 import json
 import sys
 from collections import OrderedDict
@@ -145,6 +146,12 @@ def create(ctx, redmine, *args, **kwargs):
     if kwargs.get("edit"):
         kwargs["description"] = get_description()
 
+    if kwargs.get("start") in ["now", "today"]:
+        kwargs["start"] = datetime.date.today().isoformat()
+
+    if kwargs.get("due") in ["now", "today"]:
+        kwargs["due"] = datetime.date.today().isoformat()
+
     try:
         issue = redmine.create_issue(**kwargs)
     except HTTPError as e:
@@ -180,6 +187,12 @@ def update(ctx, redmine, issue_id, **kwargs):
 
     if kwargs.get("edit"):
         kwargs["note"] = get_note()
+
+    if kwargs.get("start") in ["now", "today"]:
+        kwargs["start"] = datetime.date.today().isoformat()
+
+    if kwargs.get("due") in ["now", "today"]:
+        kwargs["due"] = datetime.date.today().isoformat()
 
     try:
         updated = redmine.update_issue(issue_id, **kwargs)
