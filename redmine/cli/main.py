@@ -120,23 +120,27 @@ def show(redmine, issue_id, journals, pager):
 
 
 @cli.command()
-@click.option(OPTIONS["subject"]["long"], OPTIONS["subject"]["short"], prompt=True)
+@click.option(OPTIONS["subject"]["long"], OPTIONS["subject"]["short"], default=None)
 @click.option(
     OPTIONS["description"]["long"], OPTIONS["description"]["short"], default=None
 )
 @click.option(OPTIONS["edit"]["long"], OPTIONS["edit"]["short"], default=False)
-@click.option(OPTIONS["project"]["long"], OPTIONS["project"]["short"], prompt=True)
-@click.option(OPTIONS["status"]["long"], OPTIONS["status"]["short"], prompt=True)
-@click.option(OPTIONS["tracker"]["long"], OPTIONS["tracker"]["short"], prompt=True)
-@click.option(OPTIONS["priority"]["long"], OPTIONS["priority"]["short"], prompt=True)
+@click.option(OPTIONS["project"]["long"], OPTIONS["project"]["short"], default=None)
+@click.option(OPTIONS["status"]["long"], OPTIONS["status"]["short"], default=None)
+@click.option(OPTIONS["tracker"]["long"], OPTIONS["tracker"]["short"], default=None)
+@click.option(OPTIONS["priority"]["long"], OPTIONS["priority"]["short"], default=None)
 @click.option(OPTIONS["assignee"]["long"], OPTIONS["assignee"]["short"], default=None)
 @click.option(OPTIONS["start"]["long"], OPTIONS["start"]["short"], default=None)
 @click.option(OPTIONS["due"]["long"], OPTIONS["due"]["short"], default=None)
 @click.option(OPTIONS["done"]["long"], OPTIONS["done"]["short"], default=None)
 @click.option(OPTIONS["parent"]["long"], OPTIONS["parent"]["short"], default=None)
 @click.pass_obj
-def create(redmine, *args, **kwargs):
+@click.pass_context
+def create(ctx, redmine, *args, **kwargs):
     """ Create new issue """
+
+    if ctx.parent.alias:
+        kwargs.update(ctx.parent.params)
 
     if kwargs.get("edit"):
         kwargs["description"] = get_description()
