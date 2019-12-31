@@ -179,7 +179,6 @@ def update(ctx, redmine, issue_id, **kwargs):
         kwargs.update(ctx.parent.params)
 
     if kwargs.get("edit"):
-        kwargs["description"] = get_description()
         kwargs["note"] = get_note()
 
     try:
