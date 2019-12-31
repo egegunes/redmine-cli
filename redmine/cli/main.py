@@ -161,7 +161,7 @@ def create(ctx, redmine, *args, **kwargs):
 
 
 @cli.command()
-@click.argument("issue_id")
+@click.argument("issues", nargs=-1)
 @click.option(OPTIONS["subject"]["long"], OPTIONS["subject"]["short"], default=None)
 @click.option(OPTIONS["project"]["long"], OPTIONS["project"]["short"], default=None)
 @click.option(OPTIONS["status"]["long"], OPTIONS["status"]["short"], default=None)
@@ -179,7 +179,7 @@ def create(ctx, redmine, *args, **kwargs):
 @click.option(OPTIONS["parent"]["long"], OPTIONS["parent"]["short"], default=None)
 @click.pass_obj
 @click.pass_context
-def update(ctx, redmine, issue_id, **kwargs):
+def update(ctx, redmine, issues, **kwargs):
     """ Update issue """
 
     if ctx.parent.alias:
@@ -195,13 +195,14 @@ def update(ctx, redmine, issue_id, **kwargs):
         kwargs["due"] = datetime.date.today().isoformat()
 
     try:
-        updated = redmine.update_issue(issue_id, **kwargs)
+        for issue_id in issues:
+            updated = redmine.update_issue(issue_id, **kwargs)
+
+            if updated:
+                msg = f"Issue {issue_id} updated."
+                click.echo(click.style(msg, fg="green"), err=True)
     except HTTPError as e:
         return click.echo(click.style(f"Fatal: {e}", fg="red"))
-
-    if updated:
-        msg = f"Issue {issue_id} updated."
-        click.echo(click.style(msg, fg="green"), err=True)
 
 
 @cli.group()
