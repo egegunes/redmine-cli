@@ -15,6 +15,7 @@ from redmine.priority import Priority
 from redmine.project import Project
 from redmine.query import Query
 from redmine.redmine import Redmine
+from redmine.time import Time
 from redmine.tracker import Tracker
 from redmine.user import User
 from redmine.version import Version
@@ -121,15 +122,28 @@ def show(redmine, issue_id, journals, pager):
 
 
 @cli.command()
-@click.option(OPTIONS["subject"]["long"], OPTIONS["subject"]["short"], default=None, required=True)
+@click.option(
+    OPTIONS["subject"]["long"], OPTIONS["subject"]["short"], default=None, required=True
+)
 @click.option(
     OPTIONS["description"]["long"], OPTIONS["description"]["short"], default=None
 )
 @click.option(OPTIONS["edit"]["long"], OPTIONS["edit"]["short"], default=False)
-@click.option(OPTIONS["project"]["long"], OPTIONS["project"]["short"], default=None, required=True)
-@click.option(OPTIONS["status"]["long"], OPTIONS["status"]["short"], default=None, required=True)
-@click.option(OPTIONS["tracker"]["long"], OPTIONS["tracker"]["short"], default=None, required=True)
-@click.option(OPTIONS["priority"]["long"], OPTIONS["priority"]["short"], default=None, required=True)
+@click.option(
+    OPTIONS["project"]["long"], OPTIONS["project"]["short"], default=None, required=True
+)
+@click.option(
+    OPTIONS["status"]["long"], OPTIONS["status"]["short"], default=None, required=True
+)
+@click.option(
+    OPTIONS["tracker"]["long"], OPTIONS["tracker"]["short"], default=None, required=True
+)
+@click.option(
+    OPTIONS["priority"]["long"],
+    OPTIONS["priority"]["short"],
+    default=None,
+    required=True,
+)
 @click.option(OPTIONS["assignee"]["long"], OPTIONS["assignee"]["short"], default=None)
 @click.option(OPTIONS["start"]["long"], OPTIONS["start"]["short"], default=None)
 @click.option(OPTIONS["due"]["long"], OPTIONS["due"]["short"], default=None)
@@ -360,3 +374,35 @@ def open(redmine, issue_id):
 
     url = urljoin(redmine.url, "/issues/{}".format(issue_id))
     click.launch(url)
+
+
+@cli.command()
+@click.option(OPTIONS["user"]["long"], OPTIONS["user"]["short"], default=None)
+@click.option(OPTIONS["project"]["long"], OPTIONS["project"]["short"], default=None)
+@click.option(OPTIONS["from"]["long"], default=None)
+@click.option(OPTIONS["to"]["long"], default=None)
+@click.option(OPTIONS["on"]["long"], default=None)
+@click.pass_obj
+def times(redmine, **kwargs):
+    """ List spent times """
+
+    on = kwargs.get("on")
+    if on is not None:
+        kwargs.update({"from": on, "to": on})
+
+    try:
+        entries = redmine.get(
+            "time_entries",
+            cache=False,
+            **{
+                "user_id": kwargs.get("user"),
+                "project_id": kwargs.get("project"),
+                "from": kwargs.get("from"),
+                "to": kwargs.get("to"),
+            },
+        )
+    except HTTPError as e:
+        return click.echo(click.style(f"Fatal: {e}", fg="red"))
+
+    for entry in entries:
+        click.echo(Time(**entry))

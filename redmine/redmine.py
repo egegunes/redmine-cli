@@ -36,10 +36,10 @@ class Redmine:
     def __str__(self):
         return repr(self)
 
-    def fetch(self, resource):
+    def fetch(self, resource, **kwargs):
         resp = requests.get(
             urljoin(self.url, "{}.json".format(resource)),
-            params={"limit": 100},
+            params={"limit": 100, **kwargs},
             headers=self.auth_header,
             verify=self.ssl_verify,
         )
@@ -52,7 +52,7 @@ class Redmine:
         with open(cache_file, "w+") as cf:
             cf.write(json.dumps(data))
 
-    def get(self, resource):
+    def get(self, resource, cache=True, **kwargs):
         # Some resources (i.e issue_priorities) have paths that contain "/"
         rname = resource.split("/")[-1]
         cache_file = os.path.join(self.cache_dir, "{}.json".format(rname))
@@ -60,8 +60,8 @@ class Redmine:
             with open(cache_file, "r") as cf:
                 data = json.loads(cf.read())
         else:
-            data = self.fetch(resource)
-            if resource in data:
+            data = self.fetch(resource, **kwargs)
+            if resource in data and cache:
                 self.set_cache(cache_file, data)
 
         return data[rname]

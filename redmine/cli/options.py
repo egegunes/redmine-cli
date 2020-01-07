@@ -27,4 +27,8 @@ OPTIONS = {
     "json": {"long": "--json/--no-json"},
     "account": {"long": "--account", "help": "Account name to use"},
     "pager": {"long": "--pager/--no-pager"},
+    "user": {"long": "--user", "short": "-u"},
+    "from": {"long": "--from"},
+    "to": {"long": "--to"},
+    "on": {"long": "--on"},
 }
