@@ -121,15 +121,15 @@ def show(redmine, issue_id, journals, pager):
 
 
 @cli.command()
-@click.option(OPTIONS["subject"]["long"], OPTIONS["subject"]["short"], default=None)
+@click.option(OPTIONS["subject"]["long"], OPTIONS["subject"]["short"], default=None, required=True)
 @click.option(
     OPTIONS["description"]["long"], OPTIONS["description"]["short"], default=None
 )
 @click.option(OPTIONS["edit"]["long"], OPTIONS["edit"]["short"], default=False)
-@click.option(OPTIONS["project"]["long"], OPTIONS["project"]["short"], default=None)
-@click.option(OPTIONS["status"]["long"], OPTIONS["status"]["short"], default=None)
-@click.option(OPTIONS["tracker"]["long"], OPTIONS["tracker"]["short"], default=None)
-@click.option(OPTIONS["priority"]["long"], OPTIONS["priority"]["short"], default=None)
+@click.option(OPTIONS["project"]["long"], OPTIONS["project"]["short"], default=None, required=True)
+@click.option(OPTIONS["status"]["long"], OPTIONS["status"]["short"], default=None, required=True)
+@click.option(OPTIONS["tracker"]["long"], OPTIONS["tracker"]["short"], default=None, required=True)
+@click.option(OPTIONS["priority"]["long"], OPTIONS["priority"]["short"], default=None, required=True)
 @click.option(OPTIONS["assignee"]["long"], OPTIONS["assignee"]["short"], default=None)
 @click.option(OPTIONS["start"]["long"], OPTIONS["start"]["short"], default=None)
 @click.option(OPTIONS["due"]["long"], OPTIONS["due"]["short"], default=None)
