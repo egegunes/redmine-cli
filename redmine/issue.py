@@ -42,7 +42,7 @@ class Issue:
 
         created_on = datetime.strptime(self.created_on, "%Y-%m-%dT%H:%M:%SZ")
         header += (
-            f"Reported by {self.author['name']} on"
+            f"Reported by {self.author['name']} on "
             f"{created_on.date()} {created_on.time()}\n\n"
         )
 

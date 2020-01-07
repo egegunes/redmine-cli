@@ -2,8 +2,9 @@ import json
 import os
 from urllib.parse import urljoin
 
-import click
 import requests
+
+import click
 
 
 class Redmine:
@@ -82,7 +83,7 @@ class Redmine:
                         memberships.extend(response["memberships"])
 
             users = {}
-            membership_types = ['user', 'group', 'group_anonymous']
+            membership_types = ["user", "group", "group_anonymous"]
 
             for m in memberships:
                 for t in membership_types:
@@ -221,3 +222,29 @@ class Redmine:
         resp.raise_for_status()
 
         return resp.json()["issue"]
+
+    def create_time_entry(self, issue_id, hours, **kwargs):
+        fields = {
+            "time_entry": {
+                "issue_id": issue_id,
+                "hours": hours,
+                "comments": kwargs.get("comment"),
+            }
+        }
+
+        if kwargs.get("activity"):
+            fields["time_entry"].update({"activity_id": kwargs.get("activity")})
+
+        if kwargs.get("on"):
+            fields["time_entry"].update({"spent_on": kwargs.get("on")})
+
+        resp = requests.post(
+            f"{self.url}/time_entries.json",
+            json=fields,
+            headers=self.auth_header,
+            verify=self.ssl_verify,
+        )
+
+        resp.raise_for_status()
+
+        return resp.json()

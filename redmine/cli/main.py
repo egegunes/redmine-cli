@@ -3,9 +3,10 @@ import json
 import sys
 from collections import OrderedDict
 
-import click
 from requests.exceptions import HTTPError
 
+import click
+from redmine.activity import Activity
 from redmine.cli.alias import AliasedGroup
 from redmine.cli.config import Config, pass_config
 from redmine.cli.helpers import get_description, get_note
@@ -299,6 +300,22 @@ def priority(redmine):
 
 @list.command()
 @click.pass_obj
+def activity(redmine):
+    """ List time tracking activities """
+
+    try:
+        activities = sorted(
+            redmine.get("enumerations/time_entry_activities"), key=lambda x: x["id"]
+        )
+    except HTTPError as e:
+        return click.echo(click.style(f"Fatal: {e}", fg="red"))
+
+    for activity in activities:
+        click.echo(Activity(**activity))
+
+
+@list.command()
+@click.pass_obj
 def user(redmine):
     """ List users """
 
@@ -406,3 +423,21 @@ def times(redmine, **kwargs):
 
     for entry in entries:
         click.echo(Time(**entry))
+
+
+@cli.command()
+@click.argument("issue_id")
+@click.argument("hours")
+@click.option(OPTIONS["on"]["long"], default=None)
+@click.option(OPTIONS["activity"]["long"], OPTIONS["activity"]["short"], default=None)
+@click.option(OPTIONS["comment"]["long"], OPTIONS["comment"]["short"], default=None)
+@click.pass_obj
+def spent(redmine, issue_id, hours, **kwargs):
+    """ Create new time entry """
+
+    try:
+        redmine.create_time_entry(issue_id, hours, **kwargs)
+    except HTTPError as e:
+        return click.echo(click.style(f"Fatal: {e}", fg="red"))
+
+    click.echo(click.style("Time logged", fg="green"), err=True)

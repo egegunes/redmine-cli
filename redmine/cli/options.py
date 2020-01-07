@@ -31,4 +31,6 @@ OPTIONS = {
     "from": {"long": "--from"},
     "to": {"long": "--to"},
     "on": {"long": "--on"},
+    "activity": {"long": "--activity", "short": "-A"},
+    "comment": {"long": "--comment", "short": "-C"},
 }

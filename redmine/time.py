@@ -9,4 +9,11 @@ class Time:
         self.spent_on = kwargs.get("spent_on")
 
     def __str__(self):
-        return f"{self.project['name']:<21.20} {self.issue['id']:>6} {self.user['name']:<21.20} {self.activity['name']:<15.14} {self.spent_on:<11} {self.hours:>6} hours"
+        time = f"{self.project['name']:<21.20} "
+        time += f"{self.issue['id']:>6} "
+        time += f"{self.user['name']:<21.20} "
+        time += f"{self.activity['name']:<15.14} "
+        time += f"{self.spent_on:<11} "
+        time += f"{self.hours:>6} hours"
+
+        return time
