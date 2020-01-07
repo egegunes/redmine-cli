@@ -205,7 +205,7 @@ class Redmine:
                 "description": kwargs.get("description"),
                 "priority_id": kwargs.get("priority"),
                 "assigned_to_id": kwargs.get("assignee"),
-                "parent_issue_id": kwargs.get("parent_issue"),
+                "parent_issue_id": kwargs.get("parent"),
                 "start_date": kwargs.get("start"),
                 "due_date": kwargs.get("due"),
                 "done_ratio": kwargs.get("done"),
