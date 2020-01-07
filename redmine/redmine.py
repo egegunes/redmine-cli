@@ -2,9 +2,8 @@ import json
 import os
 from urllib.parse import urljoin
 
-import requests
-
 import click
+import requests
 
 
 class Redmine:

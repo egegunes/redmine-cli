@@ -3,9 +3,9 @@ import json
 import sys
 from collections import OrderedDict
 
+import click
 from requests.exceptions import HTTPError
 
-import click
 from redmine.activity import Activity
 from redmine.cli.alias import AliasedGroup
 from redmine.cli.config import Config, pass_config

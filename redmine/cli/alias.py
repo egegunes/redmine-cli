@@ -1,4 +1,5 @@
 import click
+
 from redmine.cli.config import Config
 
 
