@@ -8,11 +8,18 @@ import requests
 
 class Redmine:
     def __init__(
-        self, url, api_key, ssl_verify=True, invalidate_cache=False, cache_initial=True
+        self,
+        url,
+        api_key,
+        ssl_verify=True,
+        invalidate_cache=False,
+        cache_initial=True,
+        verbose=False,
     ):
         self.url = url
         self.auth_header = {"X-Redmine-API-Key": api_key}
         self.ssl_verify = ssl_verify
+        self.verbose = verbose
 
         self.cache_dir = os.path.join(os.getenv("HOME"), ".cache/redmine")
         if not os.path.exists(self.cache_dir):
@@ -217,6 +224,11 @@ class Redmine:
             headers=self.auth_header,
             verify=self.ssl_verify,
         )
+        if self.verbose:
+            print(f"{resp.request.method} {resp.request.path_url}")
+            for key, value in resp.request.headers.items():
+                print(f"{key}: {value}")
+            print(f"{resp.request.body}")
 
         resp.raise_for_status()
 

@@ -32,6 +32,7 @@ CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
     default=False,
 )
 @click.option(OPTIONS["account"]["long"], help=OPTIONS["account"]["help"])
+@click.option(OPTIONS["verbose"]["long"], help=OPTIONS["verbose"]["help"])
 @click.pass_context
 def cli(ctx, **kwargs):
     try:
@@ -41,7 +42,11 @@ def cli(ctx, **kwargs):
         sys.exit(1)
 
     redmine = Redmine(
-        cfg.url, cfg.api_key, cfg.ssl_verify, invalidate_cache=kwargs.get("force")
+        cfg.url,
+        cfg.api_key,
+        cfg.ssl_verify,
+        invalidate_cache=kwargs.get("force"),
+        verbose=kwargs.get("verbose"),
     )
     ctx.obj = redmine
 
