@@ -34,4 +34,5 @@ OPTIONS = {
     "activity": {"long": "--activity", "short": "-A"},
     "comment": {"long": "--comment", "short": "-C"},
     "verbose": {"long": "--verbose/--no-verbose", "help": "Verbose output"},
+    "custom_field": {"long": "--cf", "help": "Custom field"}
 }

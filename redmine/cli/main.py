@@ -7,6 +7,7 @@ import click
 from requests.exceptions import HTTPError
 
 from redmine.activity import Activity
+from redmine.custom_field import CustomField
 from redmine.cli.alias import AliasedGroup
 from redmine.cli.config import Config, pass_config
 from redmine.cli.helpers import get_description, get_note
@@ -155,6 +156,7 @@ def show(redmine, issue_id, journals, pager):
 @click.option(OPTIONS["due"]["long"], OPTIONS["due"]["short"], default=None)
 @click.option(OPTIONS["done"]["long"], OPTIONS["done"]["short"], default=None)
 @click.option(OPTIONS["parent"]["long"], OPTIONS["parent"]["short"], default=None)
+@click.option(OPTIONS["custom_field"]["long"], default=None, multiple=True, type=(str, str))
 @click.pass_obj
 @click.pass_context
 def create(ctx, redmine, *args, **kwargs):
@@ -171,6 +173,9 @@ def create(ctx, redmine, *args, **kwargs):
 
     if kwargs.get("due") in ["now", "today"]:
         kwargs["due"] = datetime.date.today().isoformat()
+
+    if kwargs.get("cf") is None:
+        kwargs["cf"] = []
 
     try:
         issue = redmine.create_issue(**kwargs)
@@ -341,6 +346,19 @@ def user(redmine):
 
     for user_id, name in users.items():
         click.echo(User(user_id, name))
+
+
+@list.command()
+@click.pass_obj
+def custom_fields(redmine):
+    try:
+        custom_fields = redmine.get("custom_fields")
+    except HTTPError as e:
+        click.echo(click.style(f"Fatal: {e}", fg="red"))
+        sys.exit(1)
+
+    for field in custom_fields:
+        click.echo(CustomField(**field))
 
 
 @list.command()

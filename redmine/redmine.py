@@ -216,6 +216,7 @@ class Redmine:
                 "start_date": kwargs.get("start"),
                 "due_date": kwargs.get("due"),
                 "done_ratio": kwargs.get("done"),
+                "custom_fields": [{"id": cf[0], "value": cf[1]} for cf in kwargs.get("cf")]
             }
         }
         resp = requests.post(

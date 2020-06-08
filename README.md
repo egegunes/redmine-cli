@@ -135,6 +135,23 @@ $ redmine issues --assignee 112
 $ redmine --account account2 issues --assignee 2194
 ```
 
+### Custom fields
+
+```
+# Get ID of custom field
+$ redmine list custom-fields
+
+# Use custom field
+$ redmine create \
+    --status 1 \
+    --tracker 1 \
+    --project 88 \
+    --priority 3 \
+    --subject "Fix json output" \
+    --description "json output doesn't work for specific issue numbers"
+    --cf 1 JSON
+```
+
 ## Contributing
 
 Currently, project's roadmap is dictated by my needs at work. If you need a
