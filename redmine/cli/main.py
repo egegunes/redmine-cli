@@ -175,7 +175,12 @@ def create(ctx, redmine, *args, **kwargs):
     try:
         issue = redmine.create_issue(**kwargs)
     except HTTPError as e:
-        return click.echo(click.style(f"Fatal: {e}", fg="red"))
+        click.echo(click.style(f"Fatal: {e}", fg="red"))
+        content = json.loads(e.response.content)
+        if "errors" in content:
+            for i, error in enumerate(content["errors"]):
+                click.echo(click.style(f"ERROR {i}: {error}", fg="red"))
+        sys.exit(1)
 
     click.echo(Issue(**issue).as_row())
 
@@ -222,7 +227,12 @@ def update(ctx, redmine, issues, **kwargs):
                 msg = f"Issue {issue_id} updated."
                 click.echo(click.style(msg, fg="green"), err=True)
     except HTTPError as e:
-        return click.echo(click.style(f"Fatal: {e}", fg="red"))
+        click.echo(click.style(f"Fatal: {e}", fg="red"))
+        content = json.loads(e.response.content)
+        if "errors" in content:
+            for i, error in enumerate(content["errors"]):
+                click.echo(click.style(f"ERROR {i}: {error}", fg="red"))
+        sys.exit(1)
 
 
 @cli.group()
