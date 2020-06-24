@@ -16,7 +16,7 @@ setup(
     url="https://github.com/egegunes/redmine-cli",
     license="GPLv3",
     packages=find_packages(exclude=("tests", "docs")),
-    install_requires=["requests>=2.22.0", "click==7.0", "colorama==0.4.1"],
+    install_requires=["requests>=2.22.0", "click>=7.0", "colorama>=0.4.1"],
     entry_points="""
         [console_scripts]
         redmine=redmine.cli.main:cli
