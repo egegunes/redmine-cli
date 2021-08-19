@@ -60,9 +60,10 @@ class Redmine:
             cf.write(json.dumps(data))
 
     def get(self, resource, cache=True, **kwargs):
-        # Some resources (i.e issue_priorities) have paths that contain "/"
+        # Some resources (i.e. issue_priorities) have paths that contain "/"
         rname = resource.split("/")[-1]
         cache_file = os.path.join(self.cache_dir, "{}.json".format(rname))
+       
         if os.path.exists(cache_file):
             with open(cache_file, "r") as cf:
                 data = json.loads(cf.read())
@@ -75,6 +76,7 @@ class Redmine:
 
     def get_users(self):
         cache_file = os.path.join(self.cache_dir, "users.json")
+        
         if os.path.exists(cache_file):
             with open(cache_file, "r") as cf:
                 users = json.loads(cf.read())
@@ -156,6 +158,7 @@ class Redmine:
 
     def get_issue(self, issue_id, journals):
         query_params = {}
+
         if journals:
             query_params["include"] = "journals"
         resp = requests.get(
