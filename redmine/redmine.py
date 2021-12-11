@@ -136,6 +136,7 @@ class Redmine:
             "done_ratio": kwargs.get("done"),
             "updated_on": updated_on,
             "created_on": created_on,
+            "subject": kwargs.get("subject"),
             "limit": kwargs.get("limit"),
             "sort": kwargs.get("sort"),
         }
