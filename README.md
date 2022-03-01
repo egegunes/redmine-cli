@@ -82,6 +82,10 @@ For more options see `redmine create --help`.
 $ redmine update 107873 --assignee 112
 ```
 
+```
+$ redmine update 107873 --assignee ''
+```
+
 For more options see `redmine update --help`.
 
 ### Filter issues

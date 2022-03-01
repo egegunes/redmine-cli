@@ -188,7 +188,7 @@ class Redmine:
         }
 
         for field in list(fields["issue"].keys()):
-            if not fields["issue"][field]:
+            if fields["issue"][field] == None:
                 del fields["issue"][field]
 
         resp = requests.put(
