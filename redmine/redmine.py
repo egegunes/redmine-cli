@@ -154,6 +154,22 @@ class Redmine:
 
         return resp.json()["issues"]
 
+    def search(self, **kwargs):
+        query_params = {
+            "q": kwargs.get("query"),
+            "titles_only": kwargs.get("titles_only"),
+        }
+
+        resp = requests.get(
+            f"{self.url}/search.json",
+            params=query_params,
+            headers=self.auth_header,
+            verify=self.ssl_verify,
+        )
+
+        resp.raise_for_status()
+        return resp.json()["results"]
+
     def get_issue(self, issue_id, journals):
         query_params = {}
         if journals:
@@ -188,7 +204,7 @@ class Redmine:
         }
 
         for field in list(fields["issue"].keys()):
-            if not fields["issue"][field]:
+            if fields["issue"][field] == None:
                 del fields["issue"][field]
 
         resp = requests.put(

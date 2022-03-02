@@ -13,6 +13,7 @@ from redmine.cli.config import Config, pass_config
 from redmine.cli.helpers import get_description, get_note
 from redmine.cli.options import OPTIONS
 from redmine.issue import Issue, IssueStatus
+from redmine.search import Search
 from redmine.priority import Priority
 from redmine.project import Project
 from redmine.query import Query
@@ -96,6 +97,30 @@ def issues(ctx, redmine, issue_ids, **kwargs):
     for issue in issues:
         click.echo(Issue(**issue).as_row())
 
+
+@cli.command()
+@click.argument("query")
+@click.option(OPTIONS["titles-only"]["long"], default=True)
+@click.option(OPTIONS["json"]["long"], default=False, show_default=True)
+@click.pass_obj
+@click.pass_context
+def search(ctx, redmine, query, **kwargs):
+    """ Search issues """
+
+    if ctx.parent.alias:
+        kwargs.update(ctx.parent.params)
+
+    try:
+        kwargs.update({"query": query})
+        issues = redmine.search(**kwargs)
+    except HTTPError as e:
+        return click.echo(click.style(f"Fatal: {e}", fg="red"))
+
+    if kwargs.get("json"):
+        return click.echo(json.dumps(issues))
+
+    for issue in issues:
+        click.echo(Search(**issue).as_row())
 
 @cli.command()
 @click.argument("issue_id")

@@ -34,5 +34,6 @@ OPTIONS = {
     "activity": {"long": "--activity", "short": "-A"},
     "comment": {"long": "--comment", "short": "-C"},
     "verbose": {"long": "--verbose/--no-verbose", "help": "Verbose output"},
-    "custom_field": {"long": "--cf", "help": "Custom field"}
+    "custom_field": {"long": "--cf", "help": "Custom field"},
+    "titles-only": {"long": "--titles-only", "help": "Only search within titles"}
 }

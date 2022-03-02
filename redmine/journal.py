@@ -66,6 +66,8 @@ class Journal:
                     prefix = "Attachment"
                 elif detail["property"] == "cf":
                     continue
+                elif detail["property"] == "attr":
+                    continue
                 else:
                     raise KeyError(e)
 
